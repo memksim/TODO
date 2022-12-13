@@ -7,7 +7,7 @@ class RemoveDataUseCase(
     private val localRepository: LocalRepository
 ) {
 
-    suspend operator fun invoke(dto: ReminderDto) =
-        localRepository.deleteReminder(dto = dto)
+    suspend operator fun invoke(dtoList: List<ReminderDto>) =
+        localRepository.deleteReminder(dtoList = dtoList)
 
 }

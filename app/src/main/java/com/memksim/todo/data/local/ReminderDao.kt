@@ -7,13 +7,13 @@ import com.memksim.todo.data.entity.Reminder
 interface ReminderDao {
 
     @Insert
-    suspend fun insertReminder(reminder: Reminder)
+    suspend fun insertReminder(vararg reminder: Reminder)
 
     @Update
-    suspend fun updateReminder(reminder: Reminder)
+    suspend fun updateReminder(vararg reminder: Reminder)
 
     @Delete
-    suspend fun deleteReminder(reminder: Reminder)
+    suspend fun deleteReminder(vararg reminder: Reminder)
 
     @Query("select * from reminders where isCompleted = 0")
     suspend fun getUpcomingReminders(): List<Reminder>

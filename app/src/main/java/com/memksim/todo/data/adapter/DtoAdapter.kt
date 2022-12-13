@@ -1,6 +1,8 @@
 package com.memksim.todo.data.adapter
 
 import com.memksim.todo.data.entity.Reminder
+import com.memksim.todo.domain.constants.ReminderState
+import com.memksim.todo.domain.constants.ReminderState.*
 import com.memksim.todo.domain.model.ReminderDto
 
 fun convertDtoToReminder(dto: ReminderDto): Reminder =
@@ -20,7 +22,8 @@ fun convertReminderToDto(reminder: Reminder): ReminderDto =
         note = reminder.note,
         date = reminder.date,
         time = reminder.time,
-        isCompleted = reminder.isCompleted
+        isCompleted = reminder.isCompleted,
+        state = SAME
     )
 
 fun convertReminderListToDtoList(reminderList: List<Reminder>) : List<ReminderDto> =

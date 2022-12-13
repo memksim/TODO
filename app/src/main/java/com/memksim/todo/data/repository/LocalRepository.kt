@@ -11,32 +11,27 @@ class LocalRepository(
     private val dao: ReminderDao
 ) {
 
-    suspend fun insertReminder(dto: ReminderDto){
-        val reminder = convertDtoToReminder(dto = dto)
-        dao.insertReminder(reminder = reminder)
-    }
+    suspend fun insertReminder(dtoList: List<ReminderDto>) =
+        dao.insertReminder(reminder = dtoList.map { convertDtoToReminder(it) }.toTypedArray())
 
-    suspend fun updateReminder(dto: ReminderDto){
-        val reminder = convertDtoToReminder(dto = dto)
-        dao.updateReminder(reminder = reminder)
-    }
+    suspend fun updateReminder(dtoList: List<ReminderDto>) =
+        dao.updateReminder(reminder = dtoList.map { convertDtoToReminder(it) }.toTypedArray())
 
-    suspend fun deleteReminder(dto: ReminderDto){
-        val reminder = convertDtoToReminder(dto = dto)
-        dao.deleteReminder(reminder = reminder)
-    }
+    suspend fun deleteReminder(dtoList: List<ReminderDto>) =
+        dao.deleteReminder(reminder = dtoList.map { convertDtoToReminder(it) }.toTypedArray())
 
-    suspend fun getUpcomingReminders(): List<ReminderDto>{
+
+    suspend fun getUpcomingReminders(): List<ReminderDto> {
         val reminderList: List<Reminder> = dao.getUpcomingReminders()
         return convertReminderListToDtoList(reminderList = reminderList)
     }
 
-    suspend fun getCompletedReminders(): List<ReminderDto>{
+    suspend fun getCompletedReminders(): List<ReminderDto> {
         val reminderList: List<Reminder> = dao.getCompletedReminders()
         return convertReminderListToDtoList(reminderList = reminderList)
     }
 
-    suspend fun getReminder(id: Int): ReminderDto{
+    suspend fun getReminder(id: Int): ReminderDto {
         val reminder = dao.getReminder(id = id)
         return convertReminderToDto(reminder = reminder)
     }

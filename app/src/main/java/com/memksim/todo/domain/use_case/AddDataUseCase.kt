@@ -7,8 +7,8 @@ class AddDataUseCase(
     private val localRepository: LocalRepository
 ) {
 
-    suspend operator fun invoke(dto: ReminderDto) =
-        localRepository.insertReminder(dto = dto)
+    suspend operator fun invoke(dtoList: List<ReminderDto>) =
+        localRepository.insertReminder(dtoList = dtoList)
 
 
 }
