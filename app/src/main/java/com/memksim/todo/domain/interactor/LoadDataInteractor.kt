@@ -4,10 +4,11 @@ import com.memksim.todo.domain.constants.ReminderDtoKey
 import com.memksim.todo.domain.constants.ReminderDtoKey.*
 import com.memksim.todo.domain.model.ReminderDto
 import com.memksim.todo.domain.use_case.GetCompletedUseCase
-import com.memksim.todo.domain.use_case.GetUpcomingDataUseCase
+import com.memksim.todo.domain.use_case.GetUpcomingUseCase
+import javax.inject.Inject
 
-class LoadDataInteractor(
-    private val getUpcomingDataUseCase: GetUpcomingDataUseCase,
+class LoadDataInteractor @Inject constructor(
+    private val getUpcomingUseCase: GetUpcomingUseCase,
     private val getCompletedUseCase: GetCompletedUseCase
 ) {
 
@@ -15,7 +16,7 @@ class LoadDataInteractor(
         return when (key) {
             UPCOMING -> {
                 mapOf(
-                    key to getUpcomingDataUseCase.invoke()
+                    key to getUpcomingUseCase.invoke()
                 )
             }
             COMPLETED ->{
@@ -25,7 +26,7 @@ class LoadDataInteractor(
             }
             BOTH -> {
                 mapOf(
-                    UPCOMING to getUpcomingDataUseCase.invoke(),
+                    UPCOMING to getUpcomingUseCase.invoke(),
                     COMPLETED to getCompletedUseCase.invoke()
                 )
             }

@@ -12,9 +12,12 @@ import com.memksim.todo.view.adapter.convertDtoListToItemUiStateList
 import com.memksim.todo.view.adapter.convertItemUiStateListToDtoList
 import com.memksim.todo.view.constants.SortCondition
 import com.memksim.todo.view.constants.SortCondition.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainPageViewModel(
+@HiltViewModel
+class MainPageViewModel @Inject constructor(
     private val loadDataInteractor: LoadDataInteractor,
     private val updateDataInteractor: UpdateDataInteractor
 ) : ViewModel() {

@@ -5,8 +5,9 @@ import com.memksim.todo.domain.model.ReminderDto
 import com.memksim.todo.domain.use_case.AddDataUseCase
 import com.memksim.todo.domain.use_case.RemoveDataUseCase
 import com.memksim.todo.domain.use_case.UpdateDataUseCase
+import javax.inject.Inject
 
-class UpdateDataInteractor(
+class UpdateDataInteractor @Inject constructor(
     private val addDataUseCase: AddDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
     private val removeDataUseCase: RemoveDataUseCase

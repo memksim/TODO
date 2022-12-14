@@ -6,8 +6,9 @@ import com.memksim.todo.data.adapter.convertReminderToDto
 import com.memksim.todo.data.entity.Reminder
 import com.memksim.todo.data.local.ReminderDao
 import com.memksim.todo.domain.model.ReminderDto
+import javax.inject.Inject
 
-class LocalRepository(
+class LocalRepository @Inject constructor(
     private val dao: ReminderDao
 ) {
 
