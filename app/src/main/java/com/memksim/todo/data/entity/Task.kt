@@ -3,8 +3,8 @@ package com.memksim.todo.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "reminders")
-data class Reminder(
+@Entity(tableName = "tasks")
+data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val title: String,

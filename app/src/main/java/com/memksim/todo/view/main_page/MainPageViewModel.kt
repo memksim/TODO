@@ -1,17 +1,18 @@
 package com.memksim.todo.view.main_page
 
 import androidx.lifecycle.*
-import com.memksim.todo.domain.constants.ReminderDtoKey
-import com.memksim.todo.domain.constants.ReminderDtoKey.*
-import com.memksim.todo.domain.constants.ReminderState
-import com.memksim.todo.domain.constants.ReminderState.*
+import com.memksim.todo.domain.utils.enums.TaskDtoKey
+import com.memksim.todo.domain.utils.enums.TaskDtoKey.*
+import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.interactor.LoadDataInteractor
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
-import com.memksim.todo.domain.model.ReminderDto
-import com.memksim.todo.view.adapter.convertDtoListToItemUiStateList
-import com.memksim.todo.view.adapter.convertItemUiStateListToDtoList
-import com.memksim.todo.view.constants.SortCondition
-import com.memksim.todo.view.constants.SortCondition.*
+import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.view.converters.convertDtoListToItemUiStateList
+import com.memksim.todo.view.converters.convertItemUiStateListToDtoList
+import com.memksim.todo.view.utils.enums.SearchAppBarState
+import com.memksim.todo.view.utils.enums.SearchAppBarState.*
+import com.memksim.todo.view.utils.enums.SortCondition
+import com.memksim.todo.view.utils.enums.SortCondition.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,12 +36,14 @@ class MainPageViewModel @Inject constructor(
      * call`s once when view model init
      * */
     private fun buildState(
-        data: Map<ReminderDtoKey, List<ReminderDto>>
+        data: Map<TaskDtoKey, List<TaskDto>>
     ): MainPageUiState {
         return MainPageUiState(
             upcomingRemindersList = convertDtoListToItemUiStateList(data[UPCOMING]),
             completedRemindersList = convertDtoListToItemUiStateList(data[COMPLETED]),
-            conditionForSortReminders = DEFAULT
+            conditionForSortReminders = DEFAULT,
+            searchTopAppBarState = CLOSED,
+            searchText = ""
         )
     }
 
@@ -104,7 +107,9 @@ class MainPageViewModel @Inject constructor(
     private fun updateState(
         upcomingRemindersList: List<MainPageItemUiState> = emptyList(),
         completedRemindersList: List<MainPageItemUiState> = emptyList(),
-        conditionForSortReminders: SortCondition = DEFAULT
+        conditionForSortReminders: SortCondition = DEFAULT,
+        searchTopAppBarState: SearchAppBarState = CLOSED,
+        searchText: String = ""
     ) {
         val state = _liveData.value ?: return
 
@@ -123,6 +128,16 @@ class MainPageViewModel @Inject constructor(
                 state.conditionForSortReminders
             }else{
                 conditionForSortReminders
+            },
+            searchTopAppBarState = if(searchTopAppBarState == CLOSED){
+                state.searchTopAppBarState
+            }else{
+                searchTopAppBarState
+            },
+            searchText = if(searchText.isBlank()) {
+                state.searchText
+            }else{
+                searchText
             }
         )
     }

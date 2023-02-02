@@ -1,7 +1,7 @@
 package com.memksim.todo.view.main_page
 
-import com.memksim.todo.domain.constants.ReminderState
-import com.memksim.todo.view.ItemUiState
+import com.memksim.todo.domain.utils.enums.TaskState
+import com.memksim.todo.view.utils.base.ItemUiState
 
 data class MainPageItemUiState(
     val id: Int,
@@ -10,5 +10,5 @@ data class MainPageItemUiState(
     val date: String,
     val time: String,
     val isCompleted: Boolean,
-    val itemState: ReminderState
+    val itemState: TaskState
 ): ItemUiState

@@ -6,11 +6,13 @@ import com.memksim.todo.fakeUpcomingDtoList
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+@ExperimentalCoroutinesApi
 class LocalRepositoryTest {
 
     lateinit var repository: LocalRepository
@@ -22,24 +24,24 @@ class LocalRepositoryTest {
 
     @Test
     fun `check returning correct upcoming dto list`() = runTest {
-        coEvery { repository.getUpcomingReminders() } returns fakeUpcomingDtoList
+        coEvery { repository.getUpcomingTasks() } returns fakeUpcomingDtoList
 
         val expected = fakeUpcomingDtoList
-        val actual = repository.getUpcomingReminders()
+        val actual = repository.getUpcomingTasks()
 
-        coVerify { repository.getUpcomingReminders() }
+        coVerify { repository.getUpcomingTasks() }
 
         Assertions.assertArrayEquals(expected.toTypedArray(), actual.toTypedArray())
     }
 
     @Test
     fun `check returning correct completed dto list`() = runTest {
-        coEvery { repository.getCompletedReminders() } returns fakeCompletedDtoList
+        coEvery { repository.getCompletedTasks() } returns fakeCompletedDtoList
 
         val expected = fakeCompletedDtoList
-        val actual = repository.getCompletedReminders()
+        val actual = repository.getCompletedTasks()
 
-        coVerify { repository.getCompletedReminders() }
+        coVerify { repository.getCompletedTasks() }
 
         Assertions.assertArrayEquals(expected.toTypedArray(), actual.toTypedArray())
     }
@@ -47,12 +49,12 @@ class LocalRepositoryTest {
     @Test
     fun `check returning correct dto with correct args`() = runTest {
         val id = 1
-        coEvery { repository.getReminder(id = id) } returns fakeDto
+        coEvery { repository.getTask(id = id) } returns fakeDto
 
         val expected = fakeDto
-        val actual = repository.getReminder(id = id)
+        val actual = repository.getTask(id = id)
 
-        coVerify { repository.getReminder(id = id) }
+        coVerify { repository.getTask(id = id) }
 
         Assertions.assertEquals(expected, actual)
     }

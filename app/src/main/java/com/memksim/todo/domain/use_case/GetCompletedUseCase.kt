@@ -1,14 +1,14 @@
 package com.memksim.todo.domain.use_case
 
 import com.memksim.todo.data.repository.LocalRepository
-import com.memksim.todo.domain.model.ReminderDto
+import com.memksim.todo.domain.model.TaskDto
 import javax.inject.Inject
 
 class GetCompletedUseCase @Inject constructor(
     private val localRepository: LocalRepository
 ) {
 
-    suspend operator fun invoke(): List<ReminderDto> =
-        localRepository.getCompletedReminders()
+    suspend operator fun invoke(): List<TaskDto> =
+        localRepository.getCompletedTasks()
 
 }

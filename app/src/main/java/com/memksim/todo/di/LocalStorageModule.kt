@@ -2,8 +2,8 @@ package com.memksim.todo.di
 
 import android.content.Context
 import androidx.room.Room
-import com.memksim.todo.data.local.ReminderDao
-import com.memksim.todo.data.local.ReminderDatabase
+import com.memksim.todo.data.local.TaskDao
+import com.memksim.todo.data.local.TaskDatabase
 import com.memksim.todo.data.repository.LocalRepository
 import dagger.Module
 import dagger.Provides
@@ -20,21 +20,21 @@ class LocalStorageModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ): ReminderDatabase = Room.databaseBuilder(
+    ): TaskDatabase = Room.databaseBuilder(
         context,
-        ReminderDatabase::class.java,
-        "ReminderDb"
+        TaskDatabase::class.java,
+        "TaskDb"
     ).build()
 
     @Provides
     @Singleton
     fun provideDao(
-        db: ReminderDatabase
-    ): ReminderDao = db.getDao()
+        db: TaskDatabase
+    ): TaskDao = db.getDao()
 
     @Provides
     fun provideRepository(
-        dao: ReminderDao
+        dao: TaskDao
     ): LocalRepository = LocalRepository(dao = dao)
 
 }
