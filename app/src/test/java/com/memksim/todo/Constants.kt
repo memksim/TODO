@@ -1,0 +1,110 @@
+package com.memksim.todo
+
+import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.domain.utils.enums.TaskState
+
+val fakeUpcomingDtoList: List<TaskDto> = listOf(
+    TaskDto(
+        1,
+        "dto1",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        false,
+        TaskState.SAME
+    ),
+    TaskDto(
+        2,
+        "dto2",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        false,
+        TaskState.SAME
+    ),
+    TaskDto(
+        3,
+        "dto3",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        false,
+        TaskState.SAME
+    ),
+    TaskDto(
+        4,
+        "dto4",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        false,
+        TaskState.SAME
+    ),
+    TaskDto(
+        5,
+        "dto5",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        false,
+        TaskState.SAME
+    )
+)
+
+val fakeCompletedDtoList: List<TaskDto> = listOf(
+    TaskDto(
+        1,
+        "dto1",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        true,
+        TaskState.SAME
+    ),
+    TaskDto(
+        2,
+        "dto2",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        true,
+        TaskState.SAME
+    ),
+    TaskDto(
+        3,
+        "dto3",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        true,
+        TaskState.SAME
+    ),
+    TaskDto(
+        4,
+        "dto4",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        true,
+        TaskState.SAME
+    ),
+    TaskDto(
+        5,
+        "dto5",
+        "note...",
+        "01.01.2023",
+        "23:59",
+        true,
+        TaskState.SAME
+    )
+)
+
+val fakeDto = TaskDto(
+    1,
+    "dto1",
+    "note...",
+    "01.01.2023",
+    "23:59",
+    false,
+    TaskState.SAME
+)
