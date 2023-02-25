@@ -1,7 +1,7 @@
-package com.memksim.todo.view.main_page
+package com.memksim.todo.ui.pages.main
 
 import com.memksim.todo.domain.utils.enums.TaskState
-import com.memksim.todo.view.utils.base.ItemUiState
+import com.memksim.todo.ui.base.ItemUiState
 
 data class MainPageItemUiState(
     val id: Int,

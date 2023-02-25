@@ -1,4 +1,4 @@
-package com.memksim.todo.view.utils.enums
+package com.memksim.todo.ui.utils.enums
 
 enum class SortCondition {
 

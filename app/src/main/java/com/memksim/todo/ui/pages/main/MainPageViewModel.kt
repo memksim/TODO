@@ -1,4 +1,4 @@
-package com.memksim.todo.view.main_page
+package com.memksim.todo.ui.pages.main
 
 import androidx.lifecycle.*
 import com.memksim.todo.domain.utils.enums.TaskDtoKey
@@ -7,12 +7,12 @@ import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.interactor.LoadDataInteractor
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
 import com.memksim.todo.domain.model.TaskDto
-import com.memksim.todo.view.converters.convertDtoListToItemUiStateList
-import com.memksim.todo.view.converters.convertItemUiStateListToDtoList
-import com.memksim.todo.view.utils.enums.SearchAppBarState
-import com.memksim.todo.view.utils.enums.SearchAppBarState.*
-import com.memksim.todo.view.utils.enums.SortCondition
-import com.memksim.todo.view.utils.enums.SortCondition.*
+import com.memksim.todo.ui.converters.convertDtoListToItemUiStateList
+import com.memksim.todo.ui.converters.convertItemUiStateListToDtoList
+import com.memksim.todo.ui.utils.enums.SearchAppBarState
+import com.memksim.todo.ui.utils.enums.SearchAppBarState.*
+import com.memksim.todo.ui.utils.enums.SortCondition
+import com.memksim.todo.ui.utils.enums.SortCondition.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
