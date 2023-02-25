@@ -3,19 +3,14 @@ package com.memksim.todo.base
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import com.memksim.todo.ui.pages.main.MainScreen
-import com.memksim.todo.ui.pages.main.TaskItem
 import com.memksim.todo.ui.theme.ToDoTheme
-import com.memksim.todo.view.main_page.MainPageViewModel
-import com.memksim.todo.view.model.TaskItemUiState
+import com.memksim.todo.ui.base.TaskItemUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 val tasksList = listOf(
@@ -52,7 +47,7 @@ val tasksList = listOf(
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,6 +62,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Preview
 @Composable

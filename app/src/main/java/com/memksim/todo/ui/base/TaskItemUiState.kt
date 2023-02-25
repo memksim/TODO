@@ -1,4 +1,4 @@
-package com.memksim.todo.view.model
+package com.memksim.todo.ui.base
 
 data class TaskItemUiState(
     val title: String,

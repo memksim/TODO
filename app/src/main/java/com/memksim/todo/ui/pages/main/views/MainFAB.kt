@@ -1,4 +1,4 @@
-package com.memksim.todo.ui.pages.main
+package com.memksim.todo.ui.pages.main.views
 
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -12,9 +12,11 @@ import com.memksim.todo.R
 import com.memksim.todo.ui.theme.AppSecondColorLight
 
 @Composable
-fun MainFAB() {
+fun MainFAB(
+    onClick: () -> Unit
+) {
     FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         backgroundColor = AppSecondColorLight
     ) {
         Icon(

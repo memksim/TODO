@@ -1,7 +1,7 @@
-package com.memksim.todo.view.converters
+package com.memksim.todo.ui.converters
 
 import com.memksim.todo.domain.model.TaskDto
-import com.memksim.todo.view.main_page.MainPageItemUiState
+import com.memksim.todo.ui.pages.main.MainPageItemUiState
 
 fun TaskDto.toItemUiState(): MainPageItemUiState = MainPageItemUiState(
     id = id,
