@@ -44,7 +44,7 @@ fun BottomSheetContent(
         mutableStateOf("")
     }
     val date = remember {
-        mutableStateOf("пт, 13 март., 12:00")
+        mutableStateOf<String?>(null)
     }
     val isAdditionalInfoNeeded = remember {
         mutableStateOf(false)
@@ -53,7 +53,7 @@ fun BottomSheetContent(
         mutableStateOf(false)
     }
     val repeat = remember {
-        mutableStateOf<Repeat?>(EveryNDays(10))
+        mutableStateOf<Repeat?>(null)
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -139,13 +139,13 @@ fun BottomSheetContent(
             horizontalArrangement = Arrangement.Start
         ) {
             Column() {
-                if (date.value.isNotEmpty()) {
+                if (date.value.isNullOrEmpty().not()) {
                     OutlinedButton(
                         onClick = { setDate() },
                         modifier = Modifier.background(Color.Transparent)
                     ) {
                         Text(
-                            text = date.value,
+                            text = date.value ?: "",
                             color = Color.Black
                         )
                     }
