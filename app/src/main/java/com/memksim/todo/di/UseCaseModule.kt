@@ -14,28 +14,22 @@ class UseCaseModule {
     @Provides
     fun provideAddDataUseCase(
         repository: LocalRepository
-    ): AddDataUseCase = AddDataUseCase(localRepository = repository)
+    ): AddTaskUseCase = AddTaskUseCase(localRepository = repository)
 
     @Provides
     fun provideUpdateDataUseCase(
         repository: LocalRepository
-    ): UpdateDataUseCase = UpdateDataUseCase(localRepository = repository)
+    ): UpdateTaskUseCase = UpdateTaskUseCase(localRepository = repository)
 
     @Provides
     fun provideRemoveDataUseCase(
         repository: LocalRepository
-    ): RemoveDataUseCase = RemoveDataUseCase(localRepository = repository)
+    ): RemoveTaskUseCase = RemoveTaskUseCase(localRepository = repository)
 
     @Provides
-    fun provideGetUpcomingUseCase(
+    fun provideGetTasksUseCase(
         repository: LocalRepository
-    ): GetUpcomingUseCase = GetUpcomingUseCase(localRepository = repository)
-
-    @Provides
-    fun provideGetCompletedUseCase(
-        repository: LocalRepository
-    ): GetCompletedUseCase = GetCompletedUseCase(localRepository = repository)
-
+    ): GetTasksUseCase = GetTasksUseCase(localRepository = repository)
     @Provides
     fun provideGetDataItemUseCase(
         repository: LocalRepository

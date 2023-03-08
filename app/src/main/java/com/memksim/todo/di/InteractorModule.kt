@@ -14,22 +14,20 @@ class InteractorModule {
 
     @Provides
     fun provideLoadDataInteractor(
-        getUpcomingUseCase: GetUpcomingUseCase,
-        getCompletedUseCase: GetCompletedUseCase
+        getTasksUseCase: GetTasksUseCase
     ): LoadDataInteractor = LoadDataInteractor(
-        getUpcomingUseCase = getUpcomingUseCase,
-        getCompletedUseCase = getCompletedUseCase
+        getTasksUseCase = getTasksUseCase
     )
 
     @Provides
     fun provideUpdateDataInteractor(
-        addDataUseCase: AddDataUseCase,
-        updateDataUseCase: UpdateDataUseCase,
-        removeDataUseCase: RemoveDataUseCase
+        addTaskUseCase: AddTaskUseCase,
+        updateTaskUseCase: UpdateTaskUseCase,
+        removeTaskUseCase: RemoveTaskUseCase
     ): UpdateDataInteractor = UpdateDataInteractor(
-        addDataUseCase = addDataUseCase,
-        updateDataUseCase = updateDataUseCase,
-        removeDataUseCase = removeDataUseCase
+        addTaskUseCase = addTaskUseCase,
+        updateTaskUseCase = updateTaskUseCase,
+        removeTaskUseCase = removeTaskUseCase
     )
 
 }

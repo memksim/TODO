@@ -1,3 +1,3 @@
 package com.memksim.todo.ui.base
 
-interface UiState
+interface UiEvent

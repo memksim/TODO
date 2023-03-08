@@ -1,38 +1,41 @@
 package com.memksim.todo.domain.interactor
 
-import com.memksim.todo.domain.utils.enums.TaskDtoKey
+import android.util.Log
+import com.memksim.todo.base.consts.INTERACTOR_MESSAGE
+import com.memksim.todo.base.consts.TAG
+import com.memksim.todo.base.exceptions.DatabaseException
+import com.memksim.todo.base.exceptions.LoadDataException
 import com.memksim.todo.domain.utils.enums.TaskDtoKey.*
 import com.memksim.todo.domain.model.TaskDto
-import com.memksim.todo.domain.use_case.GetCompletedUseCase
-import com.memksim.todo.domain.use_case.GetUpcomingUseCase
+import com.memksim.todo.domain.use_case.GetTasksUseCase
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class LoadDataInteractor @Inject constructor(
-    private val getUpcomingUseCase: GetUpcomingUseCase,
-    private val getCompletedUseCase: GetCompletedUseCase
+    private val getTasksUseCase: GetTasksUseCase
 ) {
 
-    suspend operator fun invoke(key: TaskDtoKey): Map<TaskDtoKey, List<TaskDto>> {
-        return when (key) {
-            UPCOMING -> {
-                mapOf(
-                    key to getUpcomingUseCase.invoke()
-                )
-            }
-            COMPLETED ->{
-                mapOf(
-                    key to getCompletedUseCase.invoke()
-                )
-            }
-            BOTH -> {
-                mapOf(
-                    UPCOMING to getUpcomingUseCase.invoke(),
-                    COMPLETED to getCompletedUseCase.invoke()
-                )
+    suspend operator fun invoke(
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ): Flow<List<TaskDto>> =
+        withContext(dispatcher) {
+            val tasks = async { getTasksUseCase() }
+            flow {
+                try {
+                    emit(tasks.await())
+                } catch (e: DatabaseException) {
+                    Log.e(TAG, INTERACTOR_MESSAGE, e)
+                    throw LoadDataException()
+                }
             }
         }
-    }
+
 
 }

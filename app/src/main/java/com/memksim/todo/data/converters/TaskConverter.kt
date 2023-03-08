@@ -4,7 +4,7 @@ import com.memksim.todo.data.entity.Task
 import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.model.TaskDto
 
-fun TaskDto.toTask(): Task = Task(
+fun TaskDto.toDatabaseEntity(): Task = Task(
     id = id,
     title = title,
     note = note,
@@ -20,7 +20,7 @@ fun Task.toDto(): TaskDto = TaskDto(
     date = date,
     time = time,
     isCompleted = isCompleted,
-    state = SAME
+    state = NEW
 )
 
 fun convertReminderListToDtoList(taskList: List<Task>) : List<TaskDto> =
