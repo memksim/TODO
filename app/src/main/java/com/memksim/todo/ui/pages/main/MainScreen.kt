@@ -1,7 +1,6 @@
 package com.memksim.todo.ui.pages.main
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,7 +10,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.memksim.todo.ui.pages.main.views.BottomSheetContent
 import com.memksim.todo.ui.pages.main.views.MainAppBar
@@ -27,24 +27,23 @@ fun MainScreen(
 ) {
     val pageState = vm.viewState.collectAsState()
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
+
+    if(sheetState.isVisible.not()){
+        focusManager.clearFocus()
+        keyboardController?.hide()
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
     if (pageState.value.toast.isNullOrEmpty().not()) {
         Toast.makeText(LocalContext.current, pageState.value.toast, Toast.LENGTH_SHORT).show()
-    }
-
-    BackHandler {
-        coroutineScope.launch {
-            setOnCloseListener(
-                sheetState,
-                vm,
-                pageState.value.newTask
-            )
-        }
     }
 
     ModalBottomSheetLayout(
@@ -54,14 +53,15 @@ fun MainScreen(
                 newItemUiState = pageState.value.newTask,
                 onClose = {
                     coroutineScope.launch {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
                         setOnCloseListener(
-                            sheetState,
-                            vm,
-                            it
+                            sheetState = sheetState,
+                            vm = vm,
+                            item = it
                         )
                     }
                 },
-                setDate = {},
                 setRepeat = {},
                 onSave = {
                     coroutineScope.launch {
@@ -72,7 +72,7 @@ fun MainScreen(
             )
         },
         modifier = Modifier.fillMaxSize(),
-        sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+        sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
     ) {
         Scaffold(
             topBar = {
@@ -87,6 +87,17 @@ fun MainScreen(
                 }
             }
         ) {
+            /*BackHandler {
+                coroutineScope.launch {
+                    setOnCloseListener(
+                        sheetState,
+                        vm,
+                        pageState.value.newTask,
+                        focusManager,
+                        keyboardController
+                    )
+                }
+            }*/
             MainList(
                 tasks = pageState.value.tasks,
                 paddingValues = it
@@ -95,6 +106,7 @@ fun MainScreen(
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 private suspend fun setOnCloseListener(
     sheetState: ModalBottomSheetState,

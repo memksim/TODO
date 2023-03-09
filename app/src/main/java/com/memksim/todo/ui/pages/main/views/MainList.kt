@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
@@ -63,26 +62,24 @@ fun TaskItem(item: MainPageItemUiState) {
                     text = item.title,
                     fontSize = 24.sp
                 )
-                if (!item.note.isNullOrBlank()) {
+                if (item.note.isBlank().not()) {
                     Text(
                         text = item.note,
                         color = Color.Gray,
                         fontSize = 20.sp
                     )
                 }
-                if (item.date.isNullOrEmpty().not() && item.time.isNullOrEmpty().not()) {
-                    Row {
-                        Text(
-                            text = String.format(
-                                Locale.getDefault(),
-                                stringResource(R.string.date_and_time),
-                                item.date,
-                                item.time
-                            ),
-                            color = Color.Gray,
-                            fontSize = 20.sp
-                        )
-                    }
+                Row {
+                    Text(
+                        text = String.format(
+                            Locale.getDefault(),
+                            stringResource(R.string.date_and_time),
+                            item.date,
+                            item.time
+                        ),
+                        color = Color.Gray,
+                        fontSize = 20.sp
+                    )
                 }
             }
         }

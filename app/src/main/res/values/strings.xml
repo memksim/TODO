@@ -30,5 +30,7 @@
     <string name="repeat_every_week">Каждую неделю</string>
     <string name="repeat_every_month">Каждый месяц</string>
     <string name="repeat_every_year">Каждый год</string>
+    <string name="formatted_date">%1$s.%2$s.%3$s</string>
+    <string name="formatted_time">%1$s:%2$s</string>
 
 </resources>

@@ -1,33 +1,33 @@
 package com.memksim.todo.ui.pages.main.views
 
-import android.util.Log
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
 import com.memksim.todo.ui.pages.main.MainPageItemUiState
-import com.memksim.todo.ui.theme.AppMainColorLight
 import com.memksim.todo.ui.theme.AppSecondColorLight
 import com.memksim.todo.ui.utils.enums.*
+import com.memksim.todo.ui.utils.toDateTimeItem
 import java.util.*
 
 @ExperimentalComposeUiApi
@@ -36,10 +36,18 @@ import java.util.*
 fun BottomSheetContent(
     newItemUiState: MainPageItemUiState,
     onClose: (MainPageItemUiState) -> Unit,
-    setDate: () -> Unit,
     setRepeat: () -> Unit,
-    onSave: (MainPageItemUiState) -> Unit
+    onSave: (MainPageItemUiState) -> Unit,
 ) {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+    // Fetching current year, month and day
+    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    val currentMonth = calendar.get(Calendar.MONTH)
+    val currentYear = calendar.get(Calendar.YEAR)
+    // Fetching current hour, and minute
+    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+    val currentMins = calendar.get(Calendar.MINUTE)
     val taskName = remember {
         mutableStateOf(newItemUiState.title)
     }
@@ -47,10 +55,25 @@ fun BottomSheetContent(
         mutableStateOf(newItemUiState.note)
     }
     val date = remember {
-        mutableStateOf(newItemUiState.date)
+        mutableStateOf(
+            String.format(
+                Locale.getDefault(),
+                context.getString(R.string.formatted_date),
+                currentDay.toDateTimeItem(),
+                currentMonth.toDateTimeItem(),
+                currentYear.toDateTimeItem()
+            )
+        )
     }
     val time = remember {
-        mutableStateOf(newItemUiState.time)
+        mutableStateOf(
+            String.format(
+                Locale.getDefault(),
+                context.getString(R.string.formatted_time),
+                currentHour.toDateTimeItem(),
+                currentMins.toDateTimeItem()
+            )
+        )
     }
     val isAdditionalInfoNeeded = remember {
         mutableStateOf(false)
@@ -61,6 +84,36 @@ fun BottomSheetContent(
     val repeat = remember {
         mutableStateOf<Repeat?>(null)
     }
+    val datePicker = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = String.format(
+                Locale.getDefault(),
+                context.getString(R.string.formatted_date),
+                dayOfMonth.toDateTimeItem(),
+                month.toDateTimeItem(),
+                year.toDateTimeItem()
+            )
+        },
+        currentYear,
+        currentMonth,
+        currentDay
+    )
+    val timePicker = TimePickerDialog(
+        context,
+        { _: TimePicker, hour: Int, min: Int ->
+            time.value = String.format(
+                Locale.getDefault(),
+                context.getString(R.string.formatted_time),
+                hour.toDateTimeItem(),
+                min.toDateTimeItem()
+            )
+        },
+        currentHour,
+        currentMins,
+        true
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(horizontal = 8.dp)
@@ -84,7 +137,8 @@ fun BottomSheetContent(
         }
         TextInput(
             value = taskName.value,
-            hint = stringResource(id = R.string.task_name_hint)
+            hint = stringResource(id = R.string.task_name_hint),
+            keyboardController = LocalSoftwareKeyboardController.current
         ) { newValue ->
             taskName.value = newValue
         }
@@ -93,7 +147,8 @@ fun BottomSheetContent(
             TextInput(
                 value = additionalInfo.value,
                 hint = stringResource(id = R.string.add_additional_info),
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                keyboardController = LocalSoftwareKeyboardController.current
             ) { newValue ->
                 additionalInfo.value = newValue
             }
@@ -140,40 +195,37 @@ fun BottomSheetContent(
                 )
             }
 
-            IconButton(
-                onClick = { setDate() }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_time),
-                    contentDescription = stringResource(R.string.additional_info),
-                    tint = Color.DarkGray
-                )
-            }
-
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-            Column() {
-                if (date.value.isNullOrEmpty().not()) {
-                    OutlinedButton(
-                        onClick = { setDate() },
-                        modifier = Modifier.background(Color.Transparent)
-                    ) {
-                        Text(
-                            text = date.value ?: "",
-                            color = Color.Black
-                        )
-                    }
-                }
-                if (repeat.value != null) {
-                    RepeatTaskButton(
-                        repeat = repeat,
-                        setRepeat = setRepeat
-                    )
-                }
+            OutlinedButton(
+                onClick = { datePicker.show() },
+                modifier = Modifier.background(Color.Transparent)
+            ) {
+                Text(
+                    text = date.value,
+                    color = Color.Black
+                )
+            }
+            OutlinedButton(
+                onClick = { timePicker.show() },
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .padding(start = 16.dp)
+            ) {
+                Text(
+                    text = time.value,
+                    color = Color.Black
+                )
+            }
+            if (repeat.value != null) {
+                RepeatTaskButton(
+                    repeat = repeat,
+                    setRepeat = setRepeat
+                )
             }
         }
 
@@ -188,7 +240,8 @@ fun BottomSheetContent(
                         MainPageItemUiState(
                             title = taskName.value,
                             note = additionalInfo.value,
-                            date = date.value
+                            date = date.value,
+                            time = time.value
                         )
                     )
                 }
@@ -203,63 +256,19 @@ fun BottomSheetContent(
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
-private fun RepeatTaskButton(
-    repeat: MutableState<Repeat?>,
-    setRepeat: () -> Unit
-) {
-    OutlinedButton(
-        onClick = { setRepeat() },
-        modifier = Modifier.background(Color.Transparent)
-    ) {
-        Text(
-            text = when (repeat.value!!) {
-                is EveryDay -> stringResource(id = R.string.repeat_everyday)
-                is EveryNDays -> pluralStringResource(
-                    R.plurals.repeat_every_n_day,
-                    (repeat.value as EveryNDays).days,
-                    (repeat.value as EveryNDays).days
-                )
-                is EveryWeek -> stringResource(id = R.string.repeat_every_week)
-                is EveryMonth -> stringResource(id = R.string.repeat_every_month)
-                is EveryYear -> stringResource(id = R.string.repeat_every_year)
-            },
-            color = Color.Black
-        )
-    }
-}
-
-@Composable
-private fun TextInput(
-    value: String,
-    hint: String,
-    fontSize: TextUnit = 16.sp,
-    onValueChange: (String) -> Unit
-) {
-    TextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = value,
-        onValueChange = { newValue ->
-            onValueChange(newValue)
-        },
-        placeholder = {
-            Text(
-                text = hint,
-                fontSize = fontSize
-            )
-        },
-        textStyle = TextStyle(
-            fontSize = fontSize
+@Preview
+fun BottomSheetContentPreview() {
+    BottomSheetContent(
+        newItemUiState = MainPageItemUiState(
+            title = "Тестовая задачка",
+            date = "10.03.2023",
+            time = "16:00"
         ),
-        label = null,
-        colors = TextFieldDefaults.textFieldColors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            backgroundColor = Color.Transparent,
-            cursorColor = Color.DarkGray,
-            textColor = Color.DarkGray
-        ),
-        singleLine = true
+        onClose = {},
+        setRepeat = { /*TODO*/ },
+        onSave = {}
     )
 }
