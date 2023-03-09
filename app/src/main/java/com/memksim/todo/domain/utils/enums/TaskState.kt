@@ -1,5 +1,5 @@
 package com.memksim.todo.domain.utils.enums
 
 enum class TaskState {
-    NEW, UPDATED, REMOVED
+    NEW, UPDATED, COMPLETED
 }

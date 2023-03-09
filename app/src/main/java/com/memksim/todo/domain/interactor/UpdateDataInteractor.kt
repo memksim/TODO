@@ -24,7 +24,7 @@ class UpdateDataInteractor @Inject constructor(
     private val removeTaskUseCase: RemoveTaskUseCase
 ) {
 
-    suspend operator fun invoke(task: TaskDto): Flow<Boolean> = flow {
+    suspend operator fun invoke(task: TaskDto): Flow<Unit> = flow {
         try {
             when(task.state){
                 NEW -> {
@@ -33,7 +33,7 @@ class UpdateDataInteractor @Inject constructor(
                 UPDATED -> {
                     updateTaskUseCase.invoke(task = task)
                 }
-                REMOVED -> {
+                COMPLETED -> {
                     removeTaskUseCase.invoke(task = task)
                 }
             }
@@ -46,7 +46,7 @@ class UpdateDataInteractor @Inject constructor(
                 else -> Exception()
             }
         }
-        emit(true)
+        emit(Unit)
     }
 
 }

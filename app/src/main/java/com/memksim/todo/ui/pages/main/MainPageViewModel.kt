@@ -11,6 +11,8 @@ import com.memksim.todo.domain.utils.enums.TaskDtoKey.*
 import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.interactor.LoadDataInteractor
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
+import com.memksim.todo.domain.utils.enums.TaskState
+import com.memksim.todo.domain.utils.enums.TaskState.COMPLETED
 import com.memksim.todo.ui.base.BaseViewModel
 import com.memksim.todo.ui.base.UiEvent
 import com.memksim.todo.ui.converters.toDto
@@ -18,6 +20,7 @@ import com.memksim.todo.ui.converters.toItemUiState
 import com.memksim.todo.ui.utils.enums.SearchAppBarState.*
 import com.memksim.todo.ui.utils.enums.SortCondition.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,6 +49,24 @@ class MainPageViewModel @Inject constructor(
                     time = uiEvent.time
                 )
             }
+            is MainPageEvent.CompleteTask -> {
+                completeTask(uiEvent.task)
+            }
+        }
+    }
+
+    private fun completeTask(task: MainPageItemUiState) {
+        viewModelScope.launch {
+            updateDataInteractor(
+                task = task.copy(
+                    itemState = COMPLETED
+                ).toDto()
+            ).catch {
+                handleException(it)
+            }.collect{
+                delay(COMPLETE_TASK_DELAY)
+                loadData()
+            }
         }
     }
 
@@ -67,7 +88,6 @@ class MainPageViewModel @Inject constructor(
     }
 
     private fun saveTask(task: MainPageItemUiState) {
-        Log.d(TAG, "saveTask: $task")
         viewModelScope.launch {
             updateDataInteractor(task = task.toDto())
                 .catch {
@@ -102,7 +122,9 @@ class MainPageViewModel @Inject constructor(
         )
     }
 
-    private fun loadData() {
+    private fun loadData(
+        toast: String? = null
+    ) {
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(
                 isLoading = true
@@ -118,7 +140,8 @@ class MainPageViewModel @Inject constructor(
                             item.toItemUiState()
                         },
                         isLoading = false,
-                        newTask = MainPageItemUiState()
+                        newTask = MainPageItemUiState(),
+                        toast = toast
                     )
                 }
         }
@@ -134,6 +157,7 @@ class MainPageViewModel @Inject constructor(
         ) : MainPageEvent()
 
         class SaveNewTask(val task: MainPageItemUiState) : MainPageEvent()
+        class CompleteTask(val task: MainPageItemUiState) : MainPageEvent()
 
     }
 

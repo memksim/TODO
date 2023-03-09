@@ -1,5 +1,6 @@
 package com.memksim.todo.ui.pages.main.views
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +9,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -15,14 +19,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
+import com.memksim.todo.base.consts.COMPLETE_TASK_DELAY
+import com.memksim.todo.base.consts.TAG
 import com.memksim.todo.ui.pages.main.MainPageItemUiState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
 fun MainList(
     tasks: List<MainPageItemUiState>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onCompleteTask: (MainPageItemUiState) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
@@ -30,7 +39,10 @@ fun MainList(
         items(
             items = tasks
         ) { task: MainPageItemUiState ->
-            TaskItem(item = task)
+            TaskItem(item = task){
+                Log.d(TAG, "MainList: $task")
+                onCompleteTask(it)
+            }
         }
     }
 }
@@ -38,7 +50,14 @@ fun MainList(
 
 @ExperimentalMaterialApi
 @Composable
-fun TaskItem(item: MainPageItemUiState) {
+fun TaskItem(
+    item: MainPageItemUiState,
+    onCompleteTask: (MainPageItemUiState) -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val isChecked = remember {
+        mutableStateOf(false)
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White,
@@ -52,9 +71,13 @@ fun TaskItem(item: MainPageItemUiState) {
             modifier = Modifier.fillMaxSize()
         ) {
             Checkbox(
-                checked = false,
+                checked = isChecked.value,
                 onCheckedChange = {
-
+                    isChecked.value = it
+                    coroutineScope.launch {
+                        delay(COMPLETE_TASK_DELAY)
+                        if(isChecked.value) onCompleteTask(item)
+                    }
                 }
             )
             Column {

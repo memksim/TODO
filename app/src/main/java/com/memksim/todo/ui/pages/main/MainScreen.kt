@@ -87,21 +87,12 @@ fun MainScreen(
                 }
             }
         ) {
-            /*BackHandler {
-                coroutineScope.launch {
-                    setOnCloseListener(
-                        sheetState,
-                        vm,
-                        pageState.value.newTask,
-                        focusManager,
-                        keyboardController
-                    )
-                }
-            }*/
             MainList(
                 tasks = pageState.value.tasks,
                 paddingValues = it
-            )
+            ){ task ->
+                vm.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
+            }
         }
     }
 }
