@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
+import com.memksim.todo.ui.pages.main.MainPageItemUiState
 import com.memksim.todo.ui.theme.AppMainColorLight
 import com.memksim.todo.ui.theme.AppSecondColorLight
 import com.memksim.todo.ui.utils.enums.*
@@ -33,18 +34,23 @@ import java.util.*
 @ExperimentalMaterialApi
 @Composable
 fun BottomSheetContent(
-    onClose: () -> Unit,
+    newItemUiState: MainPageItemUiState,
+    onClose: (MainPageItemUiState) -> Unit,
     setDate: () -> Unit,
-    setRepeat: () -> Unit
+    setRepeat: () -> Unit,
+    onSave: (MainPageItemUiState) -> Unit
 ) {
     val taskName = remember {
-        mutableStateOf("")
+        mutableStateOf(newItemUiState.title)
     }
     val additionalInfo = remember {
-        mutableStateOf("")
+        mutableStateOf(newItemUiState.note)
     }
     val date = remember {
-        mutableStateOf<String?>(null)
+        mutableStateOf(newItemUiState.date)
+    }
+    val time = remember {
+        mutableStateOf(newItemUiState.time)
     }
     val isAdditionalInfoNeeded = remember {
         mutableStateOf(false)
@@ -60,7 +66,15 @@ fun BottomSheetContent(
         modifier = Modifier.padding(horizontal = 8.dp)
     ) {
         IconButton(
-            onClick = { onClose() }
+            onClick = {
+                onClose(
+                    MainPageItemUiState(
+                        title = taskName.value,
+                        note = additionalInfo.value,
+                        date = date.value
+                    )
+                )
+            }
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
@@ -69,16 +83,20 @@ fun BottomSheetContent(
             )
         }
         TextInput(
-            value = taskName,
+            value = taskName.value,
             hint = stringResource(id = R.string.task_name_hint)
-        )
+        ) { newValue ->
+            taskName.value = newValue
+        }
 
         if (isAdditionalInfoNeeded.value) {
             TextInput(
-                value = additionalInfo,
+                value = additionalInfo.value,
                 hint = stringResource(id = R.string.add_additional_info),
                 fontSize = 12.sp
-            )
+            ) { newValue ->
+                additionalInfo.value = newValue
+            }
         }
 
         Row(
@@ -165,7 +183,15 @@ fun BottomSheetContent(
         ) {
 
             TextButton(
-                onClick = { /*TODO*/ }
+                onClick = {
+                    onSave(
+                        MainPageItemUiState(
+                            title = taskName.value,
+                            note = additionalInfo.value,
+                            date = date.value
+                        )
+                    )
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.save),
@@ -182,7 +208,7 @@ fun BottomSheetContent(
 private fun RepeatTaskButton(
     repeat: MutableState<Repeat?>,
     setRepeat: () -> Unit
-){
+) {
     OutlinedButton(
         onClick = { setRepeat() },
         modifier = Modifier.background(Color.Transparent)
@@ -206,15 +232,16 @@ private fun RepeatTaskButton(
 
 @Composable
 private fun TextInput(
-    value: MutableState<String>,
+    value: String,
     hint: String,
-    fontSize: TextUnit = 16.sp
+    fontSize: TextUnit = 16.sp,
+    onValueChange: (String) -> Unit
 ) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
-        value = value.value,
+        value = value,
         onValueChange = { newValue ->
-            value.value = newValue
+            onValueChange(newValue)
         },
         placeholder = {
             Text(
@@ -234,17 +261,5 @@ private fun TextInput(
             textColor = Color.DarkGray
         ),
         singleLine = true
-    )
-}
-
-@ExperimentalComposeUiApi
-@ExperimentalMaterialApi
-@Preview
-@Composable
-fun BottomSheetContentPreview() {
-    BottomSheetContent(
-        {},
-        {},
-        {}
     )
 }

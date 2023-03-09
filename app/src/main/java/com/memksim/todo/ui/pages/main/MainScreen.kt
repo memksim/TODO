@@ -1,17 +1,18 @@
 package com.memksim.todo.ui.pages.main
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.memksim.todo.base.tasksList
-import com.memksim.todo.ui.base.TaskItemUiState
 import com.memksim.todo.ui.pages.main.views.BottomSheetContent
 import com.memksim.todo.ui.pages.main.views.MainAppBar
 import com.memksim.todo.ui.pages.main.views.MainFAB
@@ -21,16 +22,28 @@ import kotlinx.coroutines.launch
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(tasks: List<TaskItemUiState>) {
+fun MainScreen(
+    vm: MainPageViewModel
+) {
+    val pageState = vm.viewState.collectAsState()
+
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
     val coroutineScope = rememberCoroutineScope()
 
+    if (pageState.value.toast.isNullOrEmpty().not()) {
+        Toast.makeText(LocalContext.current, pageState.value.toast, Toast.LENGTH_SHORT).show()
+    }
+
     BackHandler {
         coroutineScope.launch {
-            sheetState.hide()
+            setOnCloseListener(
+                sheetState,
+                vm,
+                pageState.value.newTask
+            )
         }
     }
 
@@ -38,13 +51,24 @@ fun MainScreen(tasks: List<TaskItemUiState>) {
         sheetState = sheetState,
         sheetContent = {
             BottomSheetContent(
+                newItemUiState = pageState.value.newTask,
                 onClose = {
                     coroutineScope.launch {
-                        if (sheetState.isVisible) sheetState.hide()
+                        setOnCloseListener(
+                            sheetState,
+                            vm,
+                            it
+                        )
                     }
                 },
                 setDate = {},
-                setRepeat = {}
+                setRepeat = {},
+                onSave = {
+                    coroutineScope.launch {
+                        if (sheetState.isVisible) sheetState.hide()
+                        vm.handleEvent(MainPageViewModel.MainPageEvent.SaveNewTask(it))
+                    }
+                }
             )
         },
         modifier = Modifier.fillMaxSize(),
@@ -64,18 +88,28 @@ fun MainScreen(tasks: List<TaskItemUiState>) {
             }
         ) {
             MainList(
-                tasks = tasks,
+                tasks = pageState.value.tasks,
                 paddingValues = it
             )
         }
     }
 }
 
-
-@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
-@Preview
-@Composable
-private fun MainScreenPreview() {
-    MainScreen(tasksList)
+private suspend fun setOnCloseListener(
+    sheetState: ModalBottomSheetState,
+    vm: MainPageViewModel,
+    item: MainPageItemUiState
+) {
+    if (sheetState.isVisible) {
+        sheetState.hide()
+        vm.handleEvent(
+            MainPageViewModel.MainPageEvent.UpdateNewTaskInfo(
+                title = item.title,
+                note = item.note,
+                date = item.date,
+                time = item.time
+            )
+        )
+    }
 }

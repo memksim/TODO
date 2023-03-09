@@ -1,5 +1,6 @@
 package com.memksim.todo.ui.pages.main
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.memksim.todo.base.consts.*
 import com.memksim.todo.base.exceptions.AddTaskException
@@ -30,29 +31,58 @@ class MainPageViewModel @Inject constructor(
     private var _viewState: MutableStateFlow<MainPageUiState> = MutableStateFlow(MainPageUiState())
     val viewState: StateFlow<MainPageUiState> = _viewState
 
+    init {
+        loadData()
+    }
+
     override fun handleEvent(uiEvent: UiEvent) {
-        when(uiEvent){
-            is MainPageEvent.InitialEvent -> loadData()
-            is MainPageEvent.CreateNewTask -> saveTask(uiEvent.task)
+        when (uiEvent) {
+            is MainPageEvent.SaveNewTask -> saveTask(uiEvent.task)
+            is MainPageEvent.UpdateNewTaskInfo -> {
+                updateNewTaskInfo(
+                    title = uiEvent.title,
+                    note = uiEvent.note,
+                    date = uiEvent.date,
+                    time = uiEvent.time
+                )
+            }
         }
     }
 
-    private fun saveTask(task: MainPageItemUiState){
+    private fun updateNewTaskInfo(
+        title: String,
+        note: String,
+        date: String,
+        time: String
+    ) {
+        val task = _viewState.value.newTask
+        _viewState.value = _viewState.value.copy(
+            newTask = task.copy(
+                title = title.ifEmpty { task.title },
+                note = note.ifEmpty { task.note },
+                date = date.ifEmpty { task.date },
+                time = time.ifEmpty { task.time }
+            )
+        )
+    }
+
+    private fun saveTask(task: MainPageItemUiState) {
+        Log.d(TAG, "saveTask: $task")
         viewModelScope.launch {
             updateDataInteractor(task = task.toDto())
                 .catch {
                     handleException(it)
                 }
-                .collect{
+                .collect {
                     loadData()
                 }
         }
     }
 
-    private fun handleException(exception: Throwable){
+    private fun handleException(exception: Throwable) {
         _viewState.value = _viewState.value.copy(
             isLoading = false,
-            toast = when(exception){
+            toast = when (exception) {
                 is LoadDataException -> {
                     LOAD_TASK_ERROR
                 }
@@ -72,7 +102,7 @@ class MainPageViewModel @Inject constructor(
         )
     }
 
-    private fun loadData(){
+    private fun loadData() {
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(
                 isLoading = true
@@ -81,21 +111,29 @@ class MainPageViewModel @Inject constructor(
                 .catch {
                     handleException(it)
                 }
-                .collect{
+                .collect {
+                    Log.d(TAG, "loadData: $it")
                     _viewState.value = _viewState.value.copy(
                         tasks = it.map { item ->
                             item.toItemUiState()
                         },
-                        isLoading = false
+                        isLoading = false,
+                        newTask = MainPageItemUiState()
                     )
                 }
         }
     }
 
-    sealed class MainPageEvent: UiEvent{
+    sealed class MainPageEvent : UiEvent {
 
-        object InitialEvent: MainPageEvent()
-        class CreateNewTask(val task: MainPageItemUiState): MainPageEvent()
+        class UpdateNewTaskInfo(
+            val title: String = "",
+            val note: String = "",
+            val date: String = "",
+            val time: String = ""
+        ) : MainPageEvent()
+
+        class SaveNewTask(val task: MainPageItemUiState) : MainPageEvent()
 
     }
 

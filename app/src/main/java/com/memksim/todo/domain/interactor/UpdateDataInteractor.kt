@@ -43,7 +43,7 @@ class UpdateDataInteractor @Inject constructor(
                 is AddTaskException -> AddTaskException()
                 is UpdateTaskException -> UpdateTaskException()
                 is RemoveTaskException -> RemoveTaskException()
-                else -> Exception(cause = e)
+                else -> Exception()
             }
         }
         emit(true)

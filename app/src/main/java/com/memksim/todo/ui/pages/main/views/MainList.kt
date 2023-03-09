@@ -16,13 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
-import com.memksim.todo.ui.base.TaskItemUiState
+import com.memksim.todo.ui.pages.main.MainPageItemUiState
 import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
 fun MainList(
-    tasks: List<TaskItemUiState>,
+    tasks: List<MainPageItemUiState>,
     paddingValues: PaddingValues
 ) {
     LazyColumn(
@@ -30,7 +30,7 @@ fun MainList(
     ) {
         items(
             items = tasks
-        ) { task: TaskItemUiState ->
+        ) { task: MainPageItemUiState ->
             TaskItem(item = task)
         }
     }
@@ -39,7 +39,7 @@ fun MainList(
 
 @ExperimentalMaterialApi
 @Composable
-fun TaskItem(item: TaskItemUiState) {
+fun TaskItem(item: MainPageItemUiState) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White,
@@ -70,33 +70,22 @@ fun TaskItem(item: TaskItemUiState) {
                         fontSize = 20.sp
                     )
                 }
-                Row {
-                    Text(
-                        text = String.format(
-                            Locale.getDefault(),
-                            stringResource(R.string.date_and_time),
-                            item.date,
-                            item.time
-                        ),
-                        color = Color.Gray,
-                        fontSize = 20.sp
-                    )
+                if (item.date.isNullOrEmpty().not() && item.time.isNullOrEmpty().not()) {
+                    Row {
+                        Text(
+                            text = String.format(
+                                Locale.getDefault(),
+                                stringResource(R.string.date_and_time),
+                                item.date,
+                                item.time
+                            ),
+                            color = Color.Gray,
+                            fontSize = 20.sp
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@ExperimentalMaterialApi
-@Preview
-@Composable
-private fun TaskItemPreview() {
-    TaskItem(
-        item = TaskItemUiState(
-            title = "Название задачи",
-            note = "Заметка",
-            date = "02.02.2023",
-            time = "15:29"
-        )
-    )
-}

@@ -6,5 +6,6 @@ data class MainPageUiState(
     val tasks: List<MainPageItemUiState> = emptyList(),
     val isLoading: Boolean = false,
     val needToCreateNewTask: Boolean = false,
-    val toast: String? = null
+    val toast: String? = null,
+    val newTask: MainPageItemUiState = MainPageItemUiState()
 ): UiState
