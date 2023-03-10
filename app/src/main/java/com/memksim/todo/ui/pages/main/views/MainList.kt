@@ -8,10 +8,7 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -29,7 +26,7 @@ import java.util.*
 @ExperimentalMaterialApi
 @Composable
 fun MainList(
-    tasks: List<MainPageItemUiState>,
+    tasks: MutableState<List<MainPageItemUiState>>,
     paddingValues: PaddingValues,
     onCompleteTask: (MainPageItemUiState) -> Unit
 ) {
@@ -37,10 +34,9 @@ fun MainList(
         modifier = Modifier.padding(paddingValues)
     ) {
         items(
-            items = tasks
+            items = tasks.value
         ) { task: MainPageItemUiState ->
             TaskItem(item = task){
-                Log.d(TAG, "MainList: $task")
                 onCompleteTask(it)
             }
         }
@@ -56,7 +52,7 @@ fun TaskItem(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isChecked = remember {
-        mutableStateOf(false)
+        mutableStateOf(item.isCompleted)
     }
     Surface(
         modifier = Modifier.fillMaxSize(),

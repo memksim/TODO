@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -88,7 +89,7 @@ fun MainScreen(
             }
         ) {
             MainList(
-                tasks = pageState.value.tasks,
+                tasks = mutableStateOf(pageState.value.tasks),
                 paddingValues = it
             ){ task ->
                 vm.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
