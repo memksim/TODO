@@ -19,12 +19,14 @@ import com.memksim.todo.R
 import com.memksim.todo.ui.theme.AppMainColorLight
 
 @Composable
-fun TaskAppBar() {
+fun TaskAppBar(
+    navigateBack : () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(all = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ){
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { navigateBack() }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = stringResource(id = R.string.back),

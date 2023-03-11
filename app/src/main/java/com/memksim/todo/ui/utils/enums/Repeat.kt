@@ -1,6 +1,10 @@
 package com.memksim.todo.ui.utils.enums
 
-sealed class Repeat
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed class Repeat: Parcelable
 
 object Never: Repeat()
 object EveryDay: Repeat()

@@ -7,18 +7,14 @@ import com.memksim.todo.base.exceptions.AddTaskException
 import com.memksim.todo.base.exceptions.LoadDataException
 import com.memksim.todo.base.exceptions.RemoveTaskException
 import com.memksim.todo.base.exceptions.UpdateTaskException
-import com.memksim.todo.domain.utils.enums.TaskDtoKey.*
-import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.interactor.LoadDataInteractor
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
-import com.memksim.todo.domain.utils.enums.TaskState
 import com.memksim.todo.domain.utils.enums.TaskState.COMPLETED
-import com.memksim.todo.ui.base.BaseViewModel
-import com.memksim.todo.ui.base.UiEvent
-import com.memksim.todo.ui.converters.toDto
-import com.memksim.todo.ui.converters.toItemUiState
-import com.memksim.todo.ui.utils.enums.SearchAppBarState.*
-import com.memksim.todo.ui.utils.enums.SortCondition.*
+import com.memksim.todo.ui.utils.mvi.BaseViewModel
+import com.memksim.todo.ui.utils.mvi.UiEvent
+import com.memksim.todo.ui.utils.converters.toDto
+import com.memksim.todo.ui.utils.converters.toItemUiState
+import com.memksim.todo.ui.utils.model.TaskItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -55,7 +51,7 @@ class MainPageViewModel @Inject constructor(
         }
     }
 
-    private fun completeTask(task: MainPageItemUiState) {
+    private fun completeTask(task: TaskItemUiState) {
         viewModelScope.launch {
             updateDataInteractor(
                 task = task.copy(
@@ -87,7 +83,7 @@ class MainPageViewModel @Inject constructor(
         )
     }
 
-    private fun saveTask(task: MainPageItemUiState) {
+    private fun saveTask(task: TaskItemUiState) {
         viewModelScope.launch {
             updateDataInteractor(task = task.toDto())
                 .catch {
@@ -140,7 +136,7 @@ class MainPageViewModel @Inject constructor(
                             item.toItemUiState()
                         },
                         isLoading = false,
-                        newTask = MainPageItemUiState(),
+                        newTask = TaskItemUiState(),
                         toast = toast
                     )
                 }
@@ -156,8 +152,8 @@ class MainPageViewModel @Inject constructor(
             val time: String = ""
         ) : MainPageEvent()
 
-        class SaveNewTask(val task: MainPageItemUiState) : MainPageEvent()
-        class CompleteTask(val task: MainPageItemUiState) : MainPageEvent()
+        class SaveNewTask(val task: TaskItemUiState) : MainPageEvent()
+        class CompleteTask(val task: TaskItemUiState) : MainPageEvent()
 
     }
 

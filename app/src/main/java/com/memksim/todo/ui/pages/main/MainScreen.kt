@@ -1,5 +1,6 @@
 package com.memksim.todo.ui.pages.main
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,19 +15,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.memksim.todo.base.consts.TAG
+import com.memksim.todo.ui.utils.model.TaskItemUiState
 import com.memksim.todo.ui.pages.main.views.BottomSheetContent
 import com.memksim.todo.ui.pages.main.views.MainAppBar
 import com.memksim.todo.ui.pages.main.views.MainFAB
 import com.memksim.todo.ui.pages.main.views.MainList
+import com.memksim.todo.ui.utils.MAIN_PAGE_DESTINATION
+import com.memksim.todo.ui.utils.TASK_PAGE_DESTINATION
+import com.memksim.todo.ui.utils.TASK_PAGE_DESTINATION_ARGUMENT_TASK
 import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    vm: MainPageViewModel
+    viewModel: MainPageViewModel = hiltViewModel(),
+    navController: NavController
 ) {
-    val pageState = vm.viewState.collectAsState()
+    val pageState = viewModel.viewState.collectAsState()
 
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -58,16 +67,16 @@ fun MainScreen(
                         keyboardController?.hide()
                         setOnCloseListener(
                             sheetState = sheetState,
-                            vm = vm,
+                            vm = viewModel,
                             item = it
                         )
                     }
                 },
-                setRepeat = {},
+                setRepeat = {/*todo*/},
                 onSave = {
                     coroutineScope.launch {
                         if (sheetState.isVisible) sheetState.hide()
-                        vm.handleEvent(MainPageViewModel.MainPageEvent.SaveNewTask(it))
+                        viewModel.handleEvent(MainPageViewModel.MainPageEvent.SaveNewTask(it))
                     }
                 }
             )
@@ -89,11 +98,23 @@ fun MainScreen(
             }
         ) {
             MainList(
-                tasks = mutableStateOf(pageState.value.tasks),
-                paddingValues = it
-            ){ task ->
-                vm.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
-            }
+                tasks = pageState.value.tasks,
+                paddingValues = it,
+                onCompleteTask = { task ->
+                    viewModel.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
+                },
+                onClick = { task ->
+                    Log.d(TAG, "MainScreen: onClick navigate")
+                    navController.run{
+                        navigate(TASK_PAGE_DESTINATION)
+                        currentBackStackEntry?.arguments?.putParcelable(
+                            TASK_PAGE_DESTINATION_ARGUMENT_TASK,
+                            task
+                        )
+
+                    }
+                }
+            )
         }
     }
 }
@@ -103,7 +124,7 @@ fun MainScreen(
 private suspend fun setOnCloseListener(
     sheetState: ModalBottomSheetState,
     vm: MainPageViewModel,
-    item: MainPageItemUiState
+    item: TaskItemUiState
 ) {
     if (sheetState.isVisible) {
         sheetState.hide()

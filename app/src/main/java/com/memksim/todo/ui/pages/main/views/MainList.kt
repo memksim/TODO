@@ -1,6 +1,5 @@
 package com.memksim.todo.ui.pages.main.views
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,8 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
 import com.memksim.todo.base.consts.COMPLETE_TASK_DELAY
-import com.memksim.todo.base.consts.TAG
-import com.memksim.todo.ui.pages.main.MainPageItemUiState
+import com.memksim.todo.ui.utils.model.TaskItemUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -26,17 +24,21 @@ import java.util.*
 @ExperimentalMaterialApi
 @Composable
 fun MainList(
-    tasks: MutableState<List<MainPageItemUiState>>,
+    tasks: List<TaskItemUiState>,
     paddingValues: PaddingValues,
-    onCompleteTask: (MainPageItemUiState) -> Unit
+    onCompleteTask: (TaskItemUiState) -> Unit,
+    onClick: (TaskItemUiState) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
     ) {
         items(
-            items = tasks.value
-        ) { task: MainPageItemUiState ->
-            TaskItem(item = task){
+            items = tasks
+        ) { task: TaskItemUiState ->
+            TaskItem(
+                item = task,
+                onClick = onClick
+            ){
                 onCompleteTask(it)
             }
         }
@@ -47,8 +49,9 @@ fun MainList(
 @ExperimentalMaterialApi
 @Composable
 fun TaskItem(
-    item: MainPageItemUiState,
-    onCompleteTask: (MainPageItemUiState) -> Unit
+    item: TaskItemUiState,
+    onClick: (TaskItemUiState) -> Unit,
+    onCompleteTask: (TaskItemUiState) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isChecked = remember {
@@ -59,7 +62,7 @@ fun TaskItem(
         color = Color.Transparent,
         shape = RectangleShape,
         onClick = {
-
+            onClick(item)
         }
     ) {
         Row(

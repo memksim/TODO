@@ -24,11 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
-import com.memksim.todo.ui.base.views.RepeatTaskButton
-import com.memksim.todo.ui.base.views.TextInput
-import com.memksim.todo.ui.pages.main.MainPageItemUiState
+import com.memksim.todo.ui.utils.enums.Never
+import com.memksim.todo.ui.utils.enums.Repeat
+import com.memksim.todo.ui.views.RepeatTaskButton
+import com.memksim.todo.ui.views.TextInput
+import com.memksim.todo.ui.utils.model.TaskItemUiState
 import com.memksim.todo.ui.theme.AppSecondColorLight
-import com.memksim.todo.ui.utils.enums.*
 import com.memksim.todo.ui.utils.toDateTimeItem
 import java.util.*
 
@@ -36,10 +37,10 @@ import java.util.*
 @ExperimentalMaterialApi
 @Composable
 fun BottomSheetContent(
-    newItemUiState: MainPageItemUiState,
-    onClose: (MainPageItemUiState) -> Unit,
+    newItemUiState: TaskItemUiState,
+    onClose: (TaskItemUiState) -> Unit,
     setRepeat: () -> Unit,
-    onSave: (MainPageItemUiState) -> Unit,
+    onSave: (TaskItemUiState) -> Unit,
 ) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -123,7 +124,7 @@ fun BottomSheetContent(
         IconButton(
             onClick = {
                 onClose(
-                    MainPageItemUiState(
+                    TaskItemUiState(
                         title = taskName.value,
                         note = additionalInfo.value,
                         date = date.value
@@ -239,7 +240,7 @@ fun BottomSheetContent(
             TextButton(
                 onClick = {
                     onSave(
-                        MainPageItemUiState(
+                        TaskItemUiState(
                             title = taskName.value,
                             note = additionalInfo.value,
                             date = date.value,
@@ -264,7 +265,7 @@ fun BottomSheetContent(
 @Preview
 fun BottomSheetContentPreview() {
     BottomSheetContent(
-        newItemUiState = MainPageItemUiState(
+        newItemUiState = TaskItemUiState(
             title = "Тестовая задачка",
             date = "10.03.2023",
             time = "16:00"

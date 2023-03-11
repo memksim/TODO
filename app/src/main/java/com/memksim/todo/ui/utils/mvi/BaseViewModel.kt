@@ -1,7 +1,8 @@
-package com.memksim.todo.ui.base
+package com.memksim.todo.ui.utils.mvi
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.memksim.todo.ui.utils.mvi.UiEvent
+import com.memksim.todo.ui.utils.mvi.UiState
 
 abstract class BaseViewModel<T: UiState>: ViewModel() {
 
