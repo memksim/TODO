@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -75,6 +76,9 @@ fun MainScreen(
         sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
     ) {
         Scaffold(
+            topBar = {
+                MainAppBar()
+            },
             floatingActionButton = {
                 MainFAB {
                     coroutineScope.launch {
@@ -84,14 +88,12 @@ fun MainScreen(
                 }
             }
         ) {
-            Column() {
-                MainAppBar()
-                MainList(
-                    tasks = pageState.value.tasks,
-                    paddingValues = it
-                )
+            MainList(
+                tasks = mutableStateOf(pageState.value.tasks),
+                paddingValues = it
+            ){ task ->
+                vm.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
             }
-
         }
     }
 }
