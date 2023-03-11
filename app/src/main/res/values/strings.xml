@@ -21,7 +21,9 @@
     <string name="repeat_task">Повторение задачи</string>
     <string name="add_to_bookmarks">Добавить в избранное</string>
     <string name="remove_from_bookmarks">Убрать из избранного</string>
+    <string name="delete">Удалить</string>
 
+    <string name="repeat_never">Никогда</string>
     <string name="repeat_everyday">Каждый день</string>
     <plurals name="repeat_every_n_day">
         <item quantity="few">Каждые %1$d дня</item>

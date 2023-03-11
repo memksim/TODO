@@ -1,13 +1,18 @@
 package com.memksim.todo.ui.pages.main.views
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -22,30 +27,35 @@ fun MainAppBar() {
     val isMenuOpened = remember { mutableStateOf(false) }
     val isSubMenuOpened = remember { mutableStateOf(false) }
 
-    TopAppBar(
-        title = {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.Transparent)
+            .padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ){
+        Row(){
+            IconButton(onClick = {}) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_done_all),
+                    contentDescription = null,
+                    tint = AppMainColorLight
+                )
+            }
             Text(
+                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 8.dp),
                 text = stringResource(R.string.tasks),
-                color = Color.White
+                color = Color.Black,
+                fontSize = 24.sp
             )
-        },
-        backgroundColor = AppMainColorLight,
-        navigationIcon = {
-            Icon(
-                modifier = Modifier.padding(start = 8.dp),
-                painter = painterResource(id = R.drawable.ic_baseline_done_all),
-                contentDescription = null,
-                tint = Color.White
-            )
-        },
-        actions = {
+        }
+
+        Row(){
             IconButton(onClick = { isMenuOpened.value = isMenuOpened.value.not() }) {
                 Icon(
-                    painter = painterResource(
-                        id = R.drawable.ic_more,
-                    ),
+                    imageVector = Icons.Outlined.MoreVert,
                     contentDescription = stringResource(R.string.more_actions),
-                    tint = Color.White
+                    tint = Color.Black
                 )
             }
             DropdownMenu(
@@ -71,7 +81,8 @@ fun MainAppBar() {
                 }
             }
         }
-    )
+
+    }
 }
 
 @Composable

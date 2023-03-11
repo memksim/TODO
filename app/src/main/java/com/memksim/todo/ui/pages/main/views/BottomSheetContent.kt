@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
+import com.memksim.todo.ui.base.views.RepeatTaskButton
+import com.memksim.todo.ui.base.views.TextInput
 import com.memksim.todo.ui.pages.main.MainPageItemUiState
 import com.memksim.todo.ui.theme.AppSecondColorLight
 import com.memksim.todo.ui.utils.enums.*
@@ -82,7 +84,7 @@ fun BottomSheetContent(
         mutableStateOf(false)
     }
     val repeat = remember {
-        mutableStateOf<Repeat?>(null)
+        mutableStateOf<Repeat>(Never)
     }
     val datePicker = DatePickerDialog(
         context,
@@ -161,7 +163,7 @@ fun BottomSheetContent(
 
             IconButton(onClick = { setRepeat() }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_event_repeat),
+                    painter = painterResource(id = R.drawable.ic_repeat),
                     contentDescription = stringResource(R.string.repeat_task),
                     tint = Color.DarkGray
                 )

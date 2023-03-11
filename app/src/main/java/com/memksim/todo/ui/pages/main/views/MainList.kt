@@ -40,10 +40,9 @@ fun MainList(
 @Composable
 fun TaskItem(item: MainPageItemUiState) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.White,
+        modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp),
+        color = Color.Transparent,
         shape = RectangleShape,
-        elevation = 4.dp,
         onClick = {
 
         }

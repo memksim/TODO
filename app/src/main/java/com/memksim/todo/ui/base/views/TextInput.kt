@@ -1,4 +1,4 @@
-package com.memksim.todo.ui.pages.main.views
+package com.memksim.todo.ui.base.views
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
