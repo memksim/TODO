@@ -9,6 +9,9 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -17,15 +20,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.memksim.todo.R
-import com.memksim.todo.ui.base.views.RepeatTaskButton
-import com.memksim.todo.ui.base.views.TextInput
+import com.memksim.todo.domain.interactor.UpdateDataInteractor
+import com.memksim.todo.ui.utils.model.TaskItemUiState
+import com.memksim.todo.ui.views.RepeatTaskButton
+import com.memksim.todo.ui.views.TextInput
 import com.memksim.todo.ui.pages.task.views.TaskAppBar
 import com.memksim.todo.ui.pages.task.views.TaskFAB
+import com.memksim.todo.ui.utils.MAIN_PAGE_DESTINATION
+import com.memksim.todo.ui.utils.enums.Never
 
 @ExperimentalComposeUiApi
 @Composable
-fun TaskScreen(){
+fun TaskScreen(
+    navController: NavController,
+    viewModel: TaskPageViewModel = hiltViewModel(),
+    task: TaskItemUiState?
+) {
+    val title = remember { mutableStateOf(task?.title ?: "") }
+    val note = remember { mutableStateOf(task?.note ?: "") }
+    val date = remember { mutableStateOf(task?.date ?: "") }
+    val time = remember { mutableStateOf(task?.time ?: "") }
+    val repeat = remember { mutableStateOf(task?.repeat ?: "") }
+    val isCompleted = remember { mutableStateOf(task?.isCompleted ?: "") }
+
     Scaffold(
         floatingActionButton = {
             TaskFAB {
@@ -37,12 +57,20 @@ fun TaskScreen(){
         Column(
             modifier = Modifier.padding(it)
         ) {
-            TaskAppBar()
+            TaskAppBar(){
+                navController.run {
+                    navigate(MAIN_PAGE_DESTINATION){
+                        popBackStack()
+                    }
+                }
+            }
             TextInput(
-                value = "Название задачи",
+                value = title.value,
                 hint = stringResource(id = R.string.task_name_hint),
                 keyboardController = null,
-                onValueChange = {}
+                onValueChange = { newValue ->
+                    title.value = newValue
+                }
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -54,10 +82,12 @@ fun TaskScreen(){
                     tint = Color.DarkGray
                 )
                 TextInput(
-                    value = "",
+                    value = note.value,
                     hint = stringResource(id = R.string.add_additional_info),
                     keyboardController = null,
-                    onValueChange = {}
+                    onValueChange = { newValue ->
+                        note.value = newValue
+                    }
                 )
             }
             Row(
@@ -76,7 +106,7 @@ fun TaskScreen(){
                         .padding(start = 16.dp)
                 ) {
                     Text(
-                        text = "23.04.2023",
+                        text = date.value,
                         color = Color.Black
                     )
                 }
@@ -87,7 +117,7 @@ fun TaskScreen(){
                         .padding(start = 16.dp)
                 ) {
                     Text(
-                        text = "12:00",
+                        text = time.value,
                         color = Color.Black
                     )
                 }
@@ -107,11 +137,4 @@ fun TaskScreen(){
             }
         }
     }
-}
-
-@ExperimentalComposeUiApi
-@Preview
-@Composable
-private fun TaskScreenPreview(){
-    TaskScreen()
 }

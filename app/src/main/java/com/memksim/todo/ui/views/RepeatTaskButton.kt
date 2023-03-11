@@ -1,4 +1,4 @@
-package com.memksim.todo.ui.base.views
+package com.memksim.todo.ui.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding

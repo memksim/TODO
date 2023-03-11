@@ -1,9 +1,9 @@
-package com.memksim.todo.ui.converters
+package com.memksim.todo.ui.utils.converters
 
 import com.memksim.todo.domain.model.TaskDto
-import com.memksim.todo.ui.pages.main.MainPageItemUiState
+import com.memksim.todo.ui.utils.model.TaskItemUiState
 
-fun TaskDto.toItemUiState(): MainPageItemUiState = MainPageItemUiState(
+fun TaskDto.toItemUiState(): TaskItemUiState = TaskItemUiState(
     id = id,
     title = title,
     note = note,
@@ -15,14 +15,14 @@ fun TaskDto.toItemUiState(): MainPageItemUiState = MainPageItemUiState(
 
 fun convertDtoListToItemUiStateList(
     dtoList: List<TaskDto>?
-): List<MainPageItemUiState> {
+): List<TaskItemUiState> {
     dtoList ?: return emptyList()
     return dtoList.map {
         it.toItemUiState()
     }
 }
 
-fun MainPageItemUiState.toDto(): TaskDto = TaskDto(
+fun TaskItemUiState.toDto(): TaskDto = TaskDto(
     id = id,
     title = title,
     note = note,
@@ -33,7 +33,7 @@ fun MainPageItemUiState.toDto(): TaskDto = TaskDto(
 )
 
 fun convertItemUiStateListToDtoList(
-    itemList: List<MainPageItemUiState>?
+    itemList: List<TaskItemUiState>?
 ): List<TaskDto> {
     itemList ?: return emptyList()
     return itemList.map {
