@@ -9,7 +9,6 @@ fun TaskDto.toItemUiState(): TaskItemUiState = TaskItemUiState(
     note = note,
     date = date,
     time = time,
-    isCompleted = isCompleted,
     itemState = state
 )
 
@@ -28,7 +27,6 @@ fun TaskItemUiState.toDto(): TaskDto = TaskDto(
     note = note,
     date = date,
     time = time,
-    isCompleted = isCompleted,
     state = itemState
 )
 

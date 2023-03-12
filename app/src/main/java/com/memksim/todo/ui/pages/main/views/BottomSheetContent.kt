@@ -51,10 +51,11 @@ fun BottomSheetContent(
     // Fetching current hour, and minute
     val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
     val currentMins = calendar.get(Calendar.MINUTE)
-    val taskName = remember {
+
+    val title = remember {
         mutableStateOf(newItemUiState.title)
     }
-    val additionalInfo = remember {
+    val note = remember {
         mutableStateOf(newItemUiState.note)
     }
     val date = remember {
@@ -125,8 +126,8 @@ fun BottomSheetContent(
             onClick = {
                 onClose(
                     TaskItemUiState(
-                        title = taskName.value,
-                        note = additionalInfo.value,
+                        title = title.value,
+                        note = note.value,
                         date = date.value
                     )
                 )
@@ -139,21 +140,21 @@ fun BottomSheetContent(
             )
         }
         TextInput(
-            value = taskName.value,
+            value = title.value,
             hint = stringResource(id = R.string.task_name_hint),
             keyboardController = LocalSoftwareKeyboardController.current
         ) { newValue ->
-            taskName.value = newValue
+            title.value = newValue
         }
 
         if (isAdditionalInfoNeeded.value) {
             TextInput(
-                value = additionalInfo.value,
+                value = note.value,
                 hint = stringResource(id = R.string.add_additional_info),
                 fontSize = 12.sp,
                 keyboardController = LocalSoftwareKeyboardController.current
             ) { newValue ->
-                additionalInfo.value = newValue
+                note.value = newValue
             }
         }
 
@@ -224,7 +225,7 @@ fun BottomSheetContent(
                     color = Color.Black
                 )
             }
-            if (repeat.value != null) {
+            if (repeat.value != Never) {
                 RepeatTaskButton(
                     repeat = repeat,
                     setRepeat = setRepeat
@@ -241,17 +242,22 @@ fun BottomSheetContent(
                 onClick = {
                     onSave(
                         TaskItemUiState(
-                            title = taskName.value,
-                            note = additionalInfo.value,
+                            title = title.value,
+                            note = note.value,
                             date = date.value,
                             time = time.value
                         )
                     )
-                }
+                },
+                enabled = title.value.isNotBlank()
             ) {
                 Text(
                     text = stringResource(id = R.string.save),
-                    color = AppSecondColorLight
+                    color = if (title.value.isNotBlank()) {
+                        AppSecondColorLight
+                    } else {
+                        Color.Gray
+                    }
                 )
             }
         }

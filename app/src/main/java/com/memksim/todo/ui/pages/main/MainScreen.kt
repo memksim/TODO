@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import com.memksim.todo.ui.pages.main.views.BottomSheetContent
 import com.memksim.todo.ui.pages.main.views.MainAppBar
 import com.memksim.todo.ui.pages.main.views.MainFAB
 import com.memksim.todo.ui.pages.main.views.MainList
-import com.memksim.todo.ui.utils.MAIN_PAGE_DESTINATION
 import com.memksim.todo.ui.utils.TASK_PAGE_DESTINATION
 import com.memksim.todo.ui.utils.TASK_PAGE_DESTINATION_ARGUMENT_TASK
 import kotlinx.coroutines.launch
@@ -45,7 +43,7 @@ fun MainScreen(
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
 
-    if(sheetState.isVisible.not()){
+    if (sheetState.isVisible.not()) {
         focusManager.clearFocus()
         keyboardController?.hide()
     }
@@ -72,7 +70,7 @@ fun MainScreen(
                         )
                     }
                 },
-                setRepeat = {/*todo*/},
+                setRepeat = {/*todo*/ },
                 onSave = {
                     coroutineScope.launch {
                         if (sheetState.isVisible) sheetState.hide()
@@ -104,14 +102,15 @@ fun MainScreen(
                     viewModel.handleEvent(MainPageViewModel.MainPageEvent.CompleteTask(task = task))
                 },
                 onClick = { task ->
-                    Log.d(TAG, "MainScreen: onClick navigate")
-                    navController.run{
-                        navigate(TASK_PAGE_DESTINATION)
+                    Log.d(TAG, "MainScreen: onClick navigate $task")
+                    navController.run {
+                        navigate(TASK_PAGE_DESTINATION){
+                            popBackStack()
+                        }
                         currentBackStackEntry?.arguments?.putParcelable(
                             TASK_PAGE_DESTINATION_ARGUMENT_TASK,
                             task
                         )
-
                     }
                 }
             )

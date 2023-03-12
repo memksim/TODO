@@ -9,8 +9,7 @@ fun TaskDto.toDatabaseEntity(): Task = Task(
     title = title,
     note = note,
     date = date,
-    time = time,
-    isCompleted = isCompleted
+    time = time
 )
 
 fun Task.toDto(): TaskDto = TaskDto(
@@ -19,8 +18,7 @@ fun Task.toDto(): TaskDto = TaskDto(
     note = note,
     date = date,
     time = time,
-    isCompleted = isCompleted,
-    state = NEW
+    state = SAME
 )
 
 fun convertReminderListToDtoList(taskList: List<Task>) : List<TaskDto> =

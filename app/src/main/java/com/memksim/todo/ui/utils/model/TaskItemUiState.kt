@@ -15,6 +15,5 @@ data class TaskItemUiState(
     val date: String = "",
     val time: String = "",
     val repeat: Repeat = Never,
-    val isCompleted: Boolean = false,
     val itemState: TaskState = TaskState.NEW
 ): ItemUiState, Parcelable

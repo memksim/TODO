@@ -95,7 +95,7 @@ class MainPageViewModel @Inject constructor(
         }
     }
 
-    private fun handleException(exception: Throwable) {
+    override fun handleException(exception: Throwable) {
         _viewState.value = _viewState.value.copy(
             isLoading = false,
             toast = when (exception) {

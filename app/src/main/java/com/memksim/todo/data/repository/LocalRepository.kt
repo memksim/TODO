@@ -18,10 +18,9 @@ class LocalRepository @Inject constructor(
     suspend fun updateTask(task: TaskDto) =
         dao.updateTask(task = task.toDatabaseEntity())
 
-    suspend fun removeTask(task: TaskDto) =
+    suspend fun removeTask(task: TaskDto) {
         dao.deleteTask(task = task.toDatabaseEntity())
-
-
+    }
     suspend fun getTasks(): List<TaskDto> {
         val taskList: List<Task> = dao.getTasks()
         return convertReminderListToDtoList(taskList = taskList)
