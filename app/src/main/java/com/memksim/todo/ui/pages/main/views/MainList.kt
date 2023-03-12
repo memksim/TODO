@@ -54,8 +54,8 @@ fun TaskItem(
     onCompleteTask: (TaskItemUiState) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val isChecked = remember {
-        mutableStateOf(item.isCompleted)
+    val isCompleted = remember {
+        mutableStateOf(false)
     }
     Surface(
         modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp),
@@ -69,12 +69,12 @@ fun TaskItem(
             modifier = Modifier.fillMaxSize()
         ) {
             Checkbox(
-                checked = isChecked.value,
+                checked = isCompleted.value,
                 onCheckedChange = {
-                    isChecked.value = it
+                    isCompleted.value = it
                     coroutineScope.launch {
                         delay(COMPLETE_TASK_DELAY)
-                        if(isChecked.value) onCompleteTask(item)
+                        if(isCompleted.value) onCompleteTask(item)
                     }
                 }
             )

@@ -36,6 +36,9 @@ class UpdateDataInteractor @Inject constructor(
                 COMPLETED -> {
                     removeTaskUseCase.invoke(task = task)
                 }
+                SAME -> {
+                    updateTaskUseCase.invoke(task = task)
+                }
             }
         } catch (e: DatabaseException){
             Log.e(TAG, INTERACTOR_MESSAGE, e)

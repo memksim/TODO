@@ -34,5 +34,7 @@
     <string name="repeat_every_year">Каждый год</string>
     <string name="formatted_date">%1$s.%2$s.%3$s</string>
     <string name="formatted_time">%1$s:%2$s</string>
+    <string name="something_gones_wrong">Упс... \n Что-то пошло не так...</string>
+    <string name="navigate_back">Вернуться назад</string>
 
 </resources>

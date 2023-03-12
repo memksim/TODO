@@ -8,6 +8,5 @@ data class TaskDto(
     val note: String,
     val date: String,
     val time: String,
-    val isCompleted: Boolean,
     val state: TaskState
 )
