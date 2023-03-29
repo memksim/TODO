@@ -1,4 +1,4 @@
-package com.memksim.todo.base
+package com.memksim.todo.utils
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
@@ -11,5 +11,4 @@ class App: Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
     }
-
 }

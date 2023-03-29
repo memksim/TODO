@@ -1,12 +1,12 @@
 package com.memksim.todo.domain.interactor
 
 import android.util.Log
-import com.memksim.todo.base.consts.INTERACTOR_MESSAGE
-import com.memksim.todo.base.consts.TAG
-import com.memksim.todo.base.exceptions.AddTaskException
-import com.memksim.todo.base.exceptions.DatabaseException
-import com.memksim.todo.base.exceptions.RemoveTaskException
-import com.memksim.todo.base.exceptions.UpdateTaskException
+import com.memksim.todo.utils.consts.INTERACTOR_MESSAGE
+import com.memksim.todo.utils.consts.TAG
+import com.memksim.todo.utils.exceptions.AddTaskException
+import com.memksim.todo.utils.exceptions.DatabaseException
+import com.memksim.todo.utils.exceptions.RemoveTaskException
+import com.memksim.todo.utils.exceptions.UpdateTaskException
 import com.memksim.todo.domain.utils.enums.TaskState.*
 import com.memksim.todo.domain.model.TaskDto
 import com.memksim.todo.domain.use_case.AddTaskUseCase

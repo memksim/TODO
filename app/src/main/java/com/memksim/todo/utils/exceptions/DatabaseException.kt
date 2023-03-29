@@ -1,4 +1,4 @@
-package com.memksim.todo.base.exceptions
+package com.memksim.todo.utils.exceptions
 
 sealed class DatabaseException: Throwable {
     constructor(): super()

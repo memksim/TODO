@@ -2,11 +2,11 @@ package com.memksim.todo.ui.pages.main
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.memksim.todo.base.consts.*
-import com.memksim.todo.base.exceptions.AddTaskException
-import com.memksim.todo.base.exceptions.LoadDataException
-import com.memksim.todo.base.exceptions.RemoveTaskException
-import com.memksim.todo.base.exceptions.UpdateTaskException
+import com.memksim.todo.utils.consts.*
+import com.memksim.todo.utils.exceptions.AddTaskException
+import com.memksim.todo.utils.exceptions.LoadDataException
+import com.memksim.todo.utils.exceptions.RemoveTaskException
+import com.memksim.todo.utils.exceptions.UpdateTaskException
 import com.memksim.todo.domain.interactor.LoadDataInteractor
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
 import com.memksim.todo.domain.utils.enums.TaskState.COMPLETED

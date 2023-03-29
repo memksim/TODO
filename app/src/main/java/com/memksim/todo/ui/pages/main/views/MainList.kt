@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memksim.todo.R
-import com.memksim.todo.base.consts.COMPLETE_TASK_DELAY
+import com.memksim.todo.utils.consts.COMPLETE_TASK_DELAY
 import com.memksim.todo.ui.utils.model.TaskItemUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

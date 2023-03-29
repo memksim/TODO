@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.memksim.todo.base.consts.TAG
+import com.memksim.todo.utils.consts.TAG
 import com.memksim.todo.ui.utils.model.TaskItemUiState
 import com.memksim.todo.ui.pages.main.views.BottomSheetContent
 import com.memksim.todo.ui.pages.main.views.MainAppBar
