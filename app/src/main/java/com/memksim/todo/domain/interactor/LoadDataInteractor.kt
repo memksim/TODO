@@ -1,11 +1,10 @@
 package com.memksim.todo.domain.interactor
 
 import android.util.Log
-import com.memksim.todo.base.consts.INTERACTOR_MESSAGE
-import com.memksim.todo.base.consts.TAG
-import com.memksim.todo.base.exceptions.DatabaseException
-import com.memksim.todo.base.exceptions.LoadDataException
-import com.memksim.todo.domain.utils.enums.TaskDtoKey.*
+import com.memksim.todo.utils.consts.INTERACTOR_MESSAGE
+import com.memksim.todo.utils.consts.TAG
+import com.memksim.todo.utils.exceptions.DatabaseException
+import com.memksim.todo.utils.exceptions.LoadDataException
 import com.memksim.todo.domain.model.TaskDto
 import com.memksim.todo.domain.use_case.GetTasksUseCase
 import dagger.hilt.android.scopes.ViewModelScoped

@@ -1,4 +1,4 @@
-package com.memksim.todo.base.consts
+package com.memksim.todo.utils.consts
 
 const val UNKNOWN_ERROR = "произошла непредвиденная ошибка"
 const val ADD_TASK_ERROR = "не удалось сохранить задачу"
