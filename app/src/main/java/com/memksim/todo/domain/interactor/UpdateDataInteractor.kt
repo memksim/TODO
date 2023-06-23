@@ -8,7 +8,7 @@ import com.memksim.todo.utils.exceptions.DatabaseException
 import com.memksim.todo.utils.exceptions.RemoveTaskException
 import com.memksim.todo.utils.exceptions.UpdateTaskException
 import com.memksim.todo.domain.utils.enums.TaskState.*
-import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.domain.model.Task
 import com.memksim.todo.domain.use_case.AddTaskUseCase
 import com.memksim.todo.domain.use_case.RemoveTaskUseCase
 import com.memksim.todo.domain.use_case.UpdateTaskUseCase
@@ -24,7 +24,7 @@ class UpdateDataInteractor @Inject constructor(
     private val removeTaskUseCase: RemoveTaskUseCase
 ) {
 
-    suspend operator fun invoke(task: TaskDto): Flow<Unit> = flow {
+    suspend operator fun invoke(task: Task): Flow<Unit> = flow {
         try {
             when(task.state){
                 NEW -> {

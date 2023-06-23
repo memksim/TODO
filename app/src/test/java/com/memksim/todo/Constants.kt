@@ -1,10 +1,10 @@
 package com.memksim.todo
 
-import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.domain.model.Task
 import com.memksim.todo.domain.utils.enums.TaskState
 
-val fakeUpcomingDtoList: List<TaskDto> = listOf(
-    TaskDto(
+val fakeUpcomingDtoList: List<Task> = listOf(
+    Task(
         1,
         "dto1",
         "note...",
@@ -13,7 +13,7 @@ val fakeUpcomingDtoList: List<TaskDto> = listOf(
         false,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         2,
         "dto2",
         "note...",
@@ -22,7 +22,7 @@ val fakeUpcomingDtoList: List<TaskDto> = listOf(
         false,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         3,
         "dto3",
         "note...",
@@ -31,7 +31,7 @@ val fakeUpcomingDtoList: List<TaskDto> = listOf(
         false,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         4,
         "dto4",
         "note...",
@@ -40,7 +40,7 @@ val fakeUpcomingDtoList: List<TaskDto> = listOf(
         false,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         5,
         "dto5",
         "note...",
@@ -51,8 +51,8 @@ val fakeUpcomingDtoList: List<TaskDto> = listOf(
     )
 )
 
-val fakeCompletedDtoList: List<TaskDto> = listOf(
-    TaskDto(
+val fakeCompletedDtoList: List<Task> = listOf(
+    Task(
         1,
         "dto1",
         "note...",
@@ -61,7 +61,7 @@ val fakeCompletedDtoList: List<TaskDto> = listOf(
         true,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         2,
         "dto2",
         "note...",
@@ -70,7 +70,7 @@ val fakeCompletedDtoList: List<TaskDto> = listOf(
         true,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         3,
         "dto3",
         "note...",
@@ -79,7 +79,7 @@ val fakeCompletedDtoList: List<TaskDto> = listOf(
         true,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         4,
         "dto4",
         "note...",
@@ -88,7 +88,7 @@ val fakeCompletedDtoList: List<TaskDto> = listOf(
         true,
         TaskState.SAME
     ),
-    TaskDto(
+    Task(
         5,
         "dto5",
         "note...",
@@ -99,7 +99,7 @@ val fakeCompletedDtoList: List<TaskDto> = listOf(
     )
 )
 
-val fakeDto = TaskDto(
+val fakeDto = Task(
     1,
     "dto1",
     "note...",

@@ -15,6 +15,7 @@ import com.memksim.todo.ui.utils.mvi.UiEvent
 import com.memksim.todo.ui.utils.converters.toDto
 import com.memksim.todo.ui.utils.converters.toItemUiState
 import com.memksim.todo.ui.utils.model.TaskItemUiState
+import com.memksim.todo.utils.notifications.AlarmScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
     private val loadDataInteractor: LoadDataInteractor,
-    private val updateDataInteractor: UpdateDataInteractor
+    private val updateDataInteractor: UpdateDataInteractor,
+    private val alarmScheduler: AlarmScheduler
 ) : BaseViewModel<MainPageUiState>() {
 
     private var _viewState: MutableStateFlow<MainPageUiState> = MutableStateFlow(MainPageUiState())
@@ -91,6 +93,7 @@ class MainPageViewModel @Inject constructor(
                 }
                 .collect {
                     loadData()
+                    alarmScheduler.schedule(task.toDto())
                 }
         }
     }

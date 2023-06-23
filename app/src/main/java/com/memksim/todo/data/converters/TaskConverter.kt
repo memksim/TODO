@@ -1,10 +1,10 @@
 package com.memksim.todo.data.converters
 
-import com.memksim.todo.data.entity.Task
+import com.memksim.todo.data.entity.TaskEntity
 import com.memksim.todo.domain.utils.enums.TaskState.*
-import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.domain.model.Task
 
-fun TaskDto.toDatabaseEntity(): Task = Task(
+fun Task.toDatabaseEntity(): TaskEntity = TaskEntity(
     id = id,
     title = title,
     note = note,
@@ -12,7 +12,7 @@ fun TaskDto.toDatabaseEntity(): Task = Task(
     time = time
 )
 
-fun Task.toDto(): TaskDto = TaskDto(
+fun TaskEntity.toDto(): Task = Task(
     id = id,
     title = title,
     note = note,
@@ -21,7 +21,7 @@ fun Task.toDto(): TaskDto = TaskDto(
     state = SAME
 )
 
-fun convertReminderListToDtoList(taskList: List<Task>) : List<TaskDto> =
-    taskList.map {
+fun convertReminderListToDtoList(taskEntityList: List<TaskEntity>) : List<Task> =
+    taskEntityList.map {
         it.toDto()
     }

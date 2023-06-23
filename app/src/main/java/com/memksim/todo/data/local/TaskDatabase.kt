@@ -2,10 +2,10 @@ package com.memksim.todo.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.memksim.todo.data.entity.Task
+import com.memksim.todo.data.entity.TaskEntity
 
 @Database(
-    entities = [Task::class],
+    entities = [TaskEntity::class],
     version = 1,
     exportSchema = false
 )

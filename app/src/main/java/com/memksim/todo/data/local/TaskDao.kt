@@ -1,23 +1,23 @@
 package com.memksim.todo.data.local
 
 import androidx.room.*
-import com.memksim.todo.data.entity.Task
+import com.memksim.todo.data.entity.TaskEntity
 
 @Dao
 interface TaskDao {
 
     @Insert
-    suspend fun insertTask(task: Task)
+    suspend fun insertTask(taskEntity: TaskEntity)
 
     @Update
-    suspend fun updateTask(task: Task)
+    suspend fun updateTask(taskEntity: TaskEntity)
 
     @Delete
-    suspend fun deleteTask(task: Task)
+    suspend fun deleteTask(taskEntity: TaskEntity)
 
     @Query("select * from tasks")
-    suspend fun getTasks(): List<Task>
+    suspend fun getTasks(): List<TaskEntity>
 
     @Query("select * from tasks where id = :id")
-    suspend fun getTask(id: Int): Task
+    suspend fun getTask(id: Int): TaskEntity
 }
