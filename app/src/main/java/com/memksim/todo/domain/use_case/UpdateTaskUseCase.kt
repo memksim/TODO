@@ -1,17 +1,17 @@
 package com.memksim.todo.domain.use_case
 
 import com.memksim.todo.utils.exceptions.UpdateTaskException
-import com.memksim.todo.data.repository.LocalRepository
-import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.data.repository.LocalRepositoryImpl
+import com.memksim.todo.domain.model.Task
 import javax.inject.Inject
 
 class UpdateTaskUseCase @Inject constructor(
-    private val localRepository: LocalRepository
+    private val localRepositoryImpl: LocalRepositoryImpl
 ) {
 
-    suspend operator fun invoke(task: TaskDto) {
+    suspend operator fun invoke(task: Task) {
         try {
-            localRepository.updateTask(task = task)
+            localRepositoryImpl.updateTask(task = task)
         } catch (e: Throwable) {
             throw UpdateTaskException(cause = e)
         }

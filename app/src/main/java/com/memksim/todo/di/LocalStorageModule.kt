@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.memksim.todo.data.local.TaskDao
 import com.memksim.todo.data.local.TaskDatabase
 import com.memksim.todo.data.repository.LocalRepository
+import com.memksim.todo.data.repository.LocalRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +35,17 @@ class LocalStorageModule {
     ): TaskDao = db.getDao()
 
     @Provides
-    fun provideRepository(
+    fun provideLocalRepositoryImplementation(
         dao: TaskDao
-    ): LocalRepository = LocalRepository(dao = dao)
+    ): LocalRepositoryImpl = LocalRepositoryImpl(dao = dao)
+
+}
+
+@Module(includes = [LocalStorageModule::class])
+@InstallIn(SingletonComponent::class)
+interface LocalStorageBindsModule {
+
+    @Binds
+    fun bindsLocalRepository(localRepositoryImpl: LocalRepositoryImpl): LocalRepository
 
 }

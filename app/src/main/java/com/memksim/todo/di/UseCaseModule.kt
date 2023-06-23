@@ -1,6 +1,6 @@
 package com.memksim.todo.di
 
-import com.memksim.todo.data.repository.LocalRepository
+import com.memksim.todo.data.repository.LocalRepositoryImpl
 import com.memksim.todo.domain.use_case.*
 import dagger.Module
 import dagger.Provides
@@ -13,26 +13,26 @@ class UseCaseModule {
 
     @Provides
     fun provideAddDataUseCase(
-        repository: LocalRepository
-    ): AddTaskUseCase = AddTaskUseCase(localRepository = repository)
+        repository: LocalRepositoryImpl
+    ): AddTaskUseCase = AddTaskUseCase(localRepositoryImpl = repository)
 
     @Provides
     fun provideUpdateDataUseCase(
-        repository: LocalRepository
-    ): UpdateTaskUseCase = UpdateTaskUseCase(localRepository = repository)
+        repository: LocalRepositoryImpl
+    ): UpdateTaskUseCase = UpdateTaskUseCase(localRepositoryImpl = repository)
 
     @Provides
     fun provideRemoveDataUseCase(
-        repository: LocalRepository
-    ): RemoveTaskUseCase = RemoveTaskUseCase(localRepository = repository)
+        repository: LocalRepositoryImpl
+    ): RemoveTaskUseCase = RemoveTaskUseCase(localRepositoryImpl = repository)
 
     @Provides
     fun provideGetTasksUseCase(
-        repository: LocalRepository
-    ): GetTasksUseCase = GetTasksUseCase(localRepository = repository)
+        repository: LocalRepositoryImpl
+    ): GetTasksUseCase = GetTasksUseCase(localRepositoryImpl = repository)
     @Provides
     fun provideGetDataItemUseCase(
-        repository: LocalRepository
-    ): GetDataItemUseCase = GetDataItemUseCase(localRepository = repository)
+        repository: LocalRepositoryImpl
+    ): GetDataItemUseCase = GetDataItemUseCase(localRepositoryImpl = repository)
 
 }

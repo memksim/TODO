@@ -1,9 +1,9 @@
 package com.memksim.todo.ui.utils.converters
 
-import com.memksim.todo.domain.model.TaskDto
+import com.memksim.todo.domain.model.Task
 import com.memksim.todo.ui.utils.model.TaskItemUiState
 
-fun TaskDto.toItemUiState(): TaskItemUiState = TaskItemUiState(
+fun Task.toItemUiState(): TaskItemUiState = TaskItemUiState(
     id = id,
     title = title,
     note = note,
@@ -13,7 +13,7 @@ fun TaskDto.toItemUiState(): TaskItemUiState = TaskItemUiState(
 )
 
 fun convertDtoListToItemUiStateList(
-    dtoList: List<TaskDto>?
+    dtoList: List<Task>?
 ): List<TaskItemUiState> {
     dtoList ?: return emptyList()
     return dtoList.map {
@@ -21,7 +21,7 @@ fun convertDtoListToItemUiStateList(
     }
 }
 
-fun TaskItemUiState.toDto(): TaskDto = TaskDto(
+fun TaskItemUiState.toDto(): Task = Task(
     id = id,
     title = title,
     note = note,
@@ -32,7 +32,7 @@ fun TaskItemUiState.toDto(): TaskDto = TaskDto(
 
 fun convertItemUiStateListToDtoList(
     itemList: List<TaskItemUiState>?
-): List<TaskDto> {
+): List<Task> {
     itemList ?: return emptyList()
     return itemList.map {
         it.toDto()
