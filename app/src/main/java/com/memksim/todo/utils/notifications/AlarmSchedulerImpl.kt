@@ -18,13 +18,12 @@ class AlarmSchedulerImpl(
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     override fun schedule(item: Task) {
-        Log.d("ToDoAppDebug", "schedule")
         val intent = Intent(context, AlarmBroadcastReceiver::class.java).apply {
             putExtra(PENDING_INTENT_EXTRA_TITLE, item.title)
         }
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC,
-            Calendar.getInstance(TimeZone.getDefault()).time.time + 5000L,
+            System.currentTimeMillis() + 5000L,//todo
             PendingIntent.getBroadcast(
                 context,
                 item.id,

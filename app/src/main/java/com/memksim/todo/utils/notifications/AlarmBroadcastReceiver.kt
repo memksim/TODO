@@ -9,6 +9,5 @@ import com.memksim.todo.utils.consts.PENDING_INTENT_EXTRA_TITLE
 class AlarmBroadcastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val message = intent?.getStringExtra(PENDING_INTENT_EXTRA_TITLE) ?: return
-        Log.d("ToDoAppDebug", "onReceive: $message")
     }
 }
