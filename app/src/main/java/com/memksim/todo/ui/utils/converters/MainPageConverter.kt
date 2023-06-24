@@ -1,42 +1,31 @@
 package com.memksim.todo.ui.utils.converters
 
 import com.memksim.todo.domain.model.Task
-import com.memksim.todo.ui.utils.model.TaskItemUiState
+import com.memksim.todo.ui.pages.main.MainPageUiState.MainPageItemUiState
+import com.memksim.todo.ui.utils.DATE_PATTERN_WITHOUT_TIME
+import com.memksim.todo.ui.utils.FULL_DATE_TIME_PATTERN
+import com.memksim.todo.ui.utils.formatMillisToDateString
 
-fun Task.toItemUiState(): TaskItemUiState = TaskItemUiState(
+fun Task.toItemUiState(): MainPageItemUiState = MainPageItemUiState(
     id = id,
     title = title,
     note = note,
-    date = date,
-    time = time,
-    itemState = state
+    dateTime = formatMillisToDateString(
+        millis = notificationTimeInMillis,
+        if (isTimeSelected) FULL_DATE_TIME_PATTERN
+        else DATE_PATTERN_WITHOUT_TIME
+    ),
+    dateTimeInMillis = notificationTimeInMillis,
+    repeat = getRepeat(repeatCode)
 )
 
-fun convertDtoListToItemUiStateList(
-    dtoList: List<Task>?
-): List<TaskItemUiState> {
-    dtoList ?: return emptyList()
-    return dtoList.map {
-        it.toItemUiState()
-    }
-}
-
-fun TaskItemUiState.toDto(): Task = Task(
+fun MainPageItemUiState.toTask(): Task = Task(
     id = id,
     title = title,
     note = note,
-    date = date,
-    time = time,
-    state = itemState
+    notificationTimeInMillis = dateTimeInMillis,
+    repeatCode = repeat.getRepeatCode(),
+    isTimeSelected = isTimeSelected
 )
-
-fun convertItemUiStateListToDtoList(
-    itemList: List<TaskItemUiState>?
-): List<Task> {
-    itemList ?: return emptyList()
-    return itemList.map {
-        it.toDto()
-    }
-}
 
 

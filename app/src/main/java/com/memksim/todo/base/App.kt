@@ -1,4 +1,4 @@
-package com.memksim.todo.utils
+package com.memksim.todo.base
 
 import android.app.Application
 import com.google.firebase.FirebaseApp

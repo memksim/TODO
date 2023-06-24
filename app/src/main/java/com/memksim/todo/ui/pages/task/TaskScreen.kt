@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.memksim.todo.R
-import com.memksim.todo.ui.utils.model.TaskItemUiState
 import com.memksim.todo.ui.views.RepeatTaskButton
 import com.memksim.todo.ui.views.TextInput
 import com.memksim.todo.ui.pages.task.views.TaskAppBar

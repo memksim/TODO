@@ -1,7 +1,6 @@
 package com.memksim.todo.ui.pages.task
 
-import com.memksim.todo.ui.utils.model.TaskItemUiState
-import com.memksim.todo.ui.utils.mvi.UiState
+import com.memksim.todo.base.mvi.UiState
 
 data class TaskPageUiState(
     val task: TaskItemUiState = TaskItemUiState(),

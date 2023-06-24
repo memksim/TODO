@@ -4,10 +4,11 @@ import com.memksim.todo.data.repository.LocalRepository
 import com.memksim.todo.domain.model.Task
 import javax.inject.Inject
 
-class UpdateTaskUseCase @Inject constructor(
+class CompleteTaskUseCase @Inject constructor(
     private val localRepository: LocalRepository
 ) {
 
-    suspend fun execute(task: Task) = localRepository.updateTask(task)
+    suspend fun execute(task: Task) = localRepository.deleteTask(task)
+
 
 }

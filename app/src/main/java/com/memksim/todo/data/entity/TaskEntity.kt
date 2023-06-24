@@ -9,5 +9,7 @@ data class TaskEntity(
     val id: Int,
     val title: String,
     val note: String,
-    val date_time: Long
+    val date_time: Long,
+    val time_selected: Boolean,
+    val repeatCode: Int
 )

@@ -10,12 +10,10 @@ import com.memksim.todo.utils.exceptions.UpdateTaskException
 import com.memksim.todo.domain.interactor.UpdateDataInteractor
 import com.memksim.todo.domain.utils.enums.TaskState.COMPLETED
 import com.memksim.todo.domain.utils.enums.TaskState.UPDATED
-import com.memksim.todo.ui.utils.converters.toDto
 import com.memksim.todo.ui.utils.enums.Never
 import com.memksim.todo.ui.utils.enums.Repeat
-import com.memksim.todo.ui.utils.mvi.BaseViewModel
-import com.memksim.todo.ui.utils.model.TaskItemUiState
-import com.memksim.todo.ui.utils.mvi.UiEvent
+import com.memksim.todo.base.mvi.BaseViewModel
+import com.memksim.todo.base.mvi.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
